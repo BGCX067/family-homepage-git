@@ -1,0 +1,22 @@
+html {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	height: 100%;
+	width: 700px;
+	margin: 0 auto;
+}
+
+ul {
+	padding: 0px;
+	margin: 0px;
+}
+
+ul li {
+	list-style-type: none;
+}
+
+

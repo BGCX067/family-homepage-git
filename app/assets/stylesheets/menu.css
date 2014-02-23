@@ -1,0 +1,15 @@
+#menu {
+	margin-bottom: 10px;
+}
+
+#menu ul {
+
+}
+
+#menu ul li {
+	display: inline;
+}
+
+#menu ul li a {
+	text-decoration: none;
+}

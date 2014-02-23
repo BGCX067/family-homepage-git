@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>FamilyHomepage</title>
+  <title><%= t :home_title %></title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
+  
+  <%= yield :optional_resources %>
+  
+  <link rel="shortcut icon" href="/favicon.ico">
 </head>
 <body>
 
+<%= render "header_banner" %>
+
+<%= render "menu" %>
+
 <%= yield %>
+
+<%= render "footer" %>
 
 </body>
 </html>
