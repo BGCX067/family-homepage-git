@@ -8959,3 +8959,204 @@ Started GET "/assets/welcome.js?body=1" for 127.0.0.1 at 2014-02-23 22:05:03 +08
 
 
 Started GET "/assets/visuals/visualizations.js?body=1" for 127.0.0.1 at 2014-02-23 22:05:03 +0800
+
+
+Started GET "/family_tree" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+Processing by FamilyTreeController#index as HTML
+  Rendered family_tree/index.html.erb within layouts/application (0.5ms)
+  Rendered application/_header_banner.html.erb (0.1ms)
+  Rendered application/_menu.html.erb (0.6ms)
+  Rendered application/_footer.html.erb (0.1ms)
+Completed 200 OK in 23ms (Views: 20.8ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/family_tree.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/header.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/menu.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/welcome.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/footer.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/family_tree.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:13 +0800
+
+
+Started GET "/assets/visuals/constants.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:14 +0800
+
+
+Started GET "/assets/visuals/familyTree.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:14 +0800
+
+
+Started GET "/assets/visuals/visBase.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:14 +0800
+
+
+Started GET "/assets/visuals/visEdge.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:14 +0800
+
+
+Started GET "/assets/visuals/visMember.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:14 +0800
+
+
+Started GET "/assets/welcome.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:14 +0800
+
+
+Started GET "/assets/visuals/visualizations.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:14 +0800
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:14 +0800
+
+
+Started GET "/family_tree" for 127.0.0.1 at 2014-02-24 20:13:51 +0800
+Processing by FamilyTreeController#index as HTML
+  Rendered family_tree/index.html.erb within layouts/application (0.1ms)
+  Rendered application/_header_banner.html.erb (0.1ms)
+  Rendered application/_menu.html.erb (0.4ms)
+  Rendered application/_footer.html.erb (0.1ms)
+Completed 200 OK in 16ms (Views: 14.9ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/family_tree.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/menu.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/welcome.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/footer.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/header.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/visuals/visBase.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/visuals/visualizations.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/visuals/constants.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/family_tree.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/visuals/visEdge.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/visuals/visMember.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/visuals/familyTree.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/assets/welcome.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:52 +0800
+
+
+Started GET "/family_tree" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+Processing by FamilyTreeController#index as HTML
+  Rendered family_tree/index.html.erb within layouts/application (0.1ms)
+  Rendered application/_header_banner.html.erb (0.1ms)
+  Rendered application/_menu.html.erb (0.5ms)
+  Rendered application/_footer.html.erb (0.1ms)
+Completed 200 OK in 17ms (Views: 15.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/assets/header.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/footer.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/menu.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/family_tree.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/welcome.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/main.css?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/turbolinks.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/visuals/constants.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/visuals/visualizations.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/visuals/familyTree.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/visuals/visBase.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/visuals/visMember.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/family_tree.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/visuals/visEdge.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/welcome.js?body=1" for 127.0.0.1 at 2014-02-24 20:13:59 +0800
+
+
+Started GET "/assets/favicon.ico" for 127.0.0.1 at 2014-02-24 20:13:59 +0800

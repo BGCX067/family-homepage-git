@@ -88,8 +88,8 @@ function VisMember(options) {
 				opacity: opacity,
 		        r: this.getRadius(),
 		        // fill: this.getFill(),
-		        'stroke-width': this.get('stroke-width'),
-		        stroke: this.get('stroke')
+		        'stroke-width': this['stroke-width'],
+		        stroke: this.stroke
 			},
 			info: {
 				
@@ -119,8 +119,14 @@ function VisMember(options) {
 	};
 	
 	this.makeCircle = function(paper) {
-		return paper.circle();
+		var pos = this.getScreenCoords();
+		return paper.circle(
+			pos.x,
+			pos.y,
+			this.getRadius()
+		).attr(this.getAttributes().circle);
 	};
+
 	
 	this.makeText = function(paper) {
 		return paper.text();
@@ -128,6 +134,13 @@ function VisMember(options) {
 	
 	this.makeGender = function(paper) {
 		return paper.path();
+	};
+	
+	this.setDepthBasedOn = function(increment) {
+		if (!this.depth) {
+			throw new Error("no depth yet");
+		}
+		this.pos.y = this.depth * increment;
 	};
 	
 	this.initialize(options);

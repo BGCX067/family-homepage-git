@@ -150,7 +150,116 @@ function FamilyVisuals() {
 	};
 	
 	// start for drawing tree
+	this.refreshTree = function() {
+		this.fullCalc();
+		
+		// this.animateAll(0);
+	};
 	
+	this.fullCalc = function() {
+		this.calcDepth();
+		this.calcWidth();
+	};
+	
+	this.calcDepth = function() {
+		var maxDepth = this.calcMaxDepthRecusive(this.baseId, 0);
+		this.calcDepthRecursive(this.baseId, maxDepth);
+		
+		var increment = this.getDepthIncrement(maxDepth);
+		_.each(this.visMemberMap, function(member) {
+			member.setDepthBasedOn(increment);
+		});
+	};
+	
+	this.calcMaxDepthRecusive = function(id, depth) {
+		var member = this.visMemberMap[id];
+		var parents = member.parents;
+		// if (!parents || _.isEmpty(parents)) {
+			// return depth;
+		// }
+		var maxDepth = depth;
+		_.each(parents, function(parent) {
+			var d = this.calcMaxDepthRecusive(parent.uuid, depth + 1);
+			maxDepth = Math.max(maxDepth, d);
+		}, this);
+		return maxDepth;
+	};
+	
+	// set depth attribute on each VisMember
+	this.calcDepthRecursive = function(id, depth) {
+		var member = this.visMemberMap[id];
+		member.depth = depth;
+		var parents = member.parents;
+		// if (!parents || _.isEmpty(parents)) {
+			// return;
+		// }
+		_.each(parents, function(parent) {
+			this.calcDepthRecursive(parent.uuid, depth - 1);
+		}, this);
+	};
+	
+	this.calcWidth = function() {
+		this.calcMaxWidthRecursive();
+		var bounds = this.getPosBoundaries();
+		this.assignBoundsRecursive(this.baseId, bounds.min, bounds.max);
+	};
+	
+	this.calcMaxWidthRecursive = function(id) {
+		var member = this.visMemberMap[id];
+		var parents = member.parents;
+		// if (!parents || _.isEmpty(parents)) {
+			// return 1;
+		// }
+		var totalWidth = 0;
+		_.each(parents, function(parent) {
+			var w = this.calcMaxWidthRecursive(parent.uuid);
+			totalWidth += w;
+		}, this);
+		var maxWidth = Math.max(totalWidth, 1);
+		member.maxWidth = maxWidth;
+		return maxWidth;
+	};
+	
+	this.assignBoundsRecursive = function(id, min, max) {
+		var member = this.visMemberMap[id];
+		var pos = (min + max) / 2;
+		member.pos.x = pox;
+		var parents = member.parents;
+		if (!parents || _.isEmpty(parents)) {
+			return;
+		}
+		var totalFlex = member.maxWidth;
+		var length = max - min;
+		var preMin = min;
+		_.each(parents, function(parent) {
+			var portion = parent.maxWidth / totalFlex * length;
+			var childMin = preMin;
+			var childMax = childMin + portion;
+			this.assignBoundsRecursive(parent.uuid, childMin, childMax);
+			preMin += portion;
+		}, this);
+	};
+	
+	// would be useful if to draw legend on either side
+	this.getPosBoundaries = function() {
+		return {
+			min: 0,
+			max: 1
+		};
+	};
+	
+	// would be useful if to support different resolutions
+	this.getMinLayers = function() {
+		return 6;
+	};
+	
+	this.getDepthIncrement = function(maxDepth) {
+		// assume there are at least a number of layers until later
+		// to have better visuals
+		maxDepth = Math.max(maxDepth, this.getMinLayers());
+		var increment = 1.0 / maxDepth;
+		return increment;
+	};
 	
 	// end for drawing tree
 
@@ -199,8 +308,8 @@ FamilyVisuals.prototype.toScreenCoords = function(pos) {
 	var y = asymShrink(pos.y, this.paper.height, padding.topHeightPadding, padding.bottomHeightPadding);
 
 	return {
-		x : x,
-		y : y
+		x: x,
+		y: y
 	};
 };
 
@@ -208,6 +317,6 @@ FamilyVisuals.prototype.getScreenPadding = function() {
 	return {
 		widthPadding: GRAPHICS.nodeRadius * 1.5,
 		topHeightPadding: GRAPHICS.nodeRadius * 1.5,
-		bottomHeightPadding: GRAPHICS.nodeRadius * 5
+		bottomHeightPadding: GRAPHICS.nodeRadius * 3
 	};
 };

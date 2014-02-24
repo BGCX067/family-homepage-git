@@ -6,7 +6,7 @@ var VIEWPORT = {
 };
 
 var GRAPHICS = {
-	nodeRadius: 64,
+	nodeRadius: 32,
 	curveControlPointOffset: 50,
 	defaultNodeStroke: #FFF,
 	defaultNodeStrokeWidth: 2 
