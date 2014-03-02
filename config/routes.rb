@@ -1,6 +1,7 @@
 FamilyHomepage::Application.routes.draw do
   
   get "family_tree", to: "family_tree#index"
+  get "family_tree/members", to: "family_tree#members"
   get "welcome", to: "welcome#index"
   
   root "welcome#index"
