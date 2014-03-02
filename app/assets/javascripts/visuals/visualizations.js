@@ -15,6 +15,9 @@ function FamilyVisuals() {
 
 		this.containerElement = $("#family_tree");
 
+		// add event listener
+		// eve.on('paper_resize', _.bind(this.initialBuildTree, this));
+
 		var _this = this;
 
 		// var containerElement = this.containerElement || $("#family_tree")[0];
@@ -317,6 +320,7 @@ function FamilyVisuals() {
 
 		this.paper.setSize(width, height);
 
+		// eve('paper_resize');
 	};
 	
 	// in later version, we may support animations

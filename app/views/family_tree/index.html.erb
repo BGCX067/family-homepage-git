@@ -1,6 +1,13 @@
 <% content_for :optional_resources do %>
 <% end %>
 
+<!-- try to pass data to javascript -->
+<!-- <%= javascript_tag do %>
+	window.familyTree = <%= raw @family.to_json %>
+	var tree = new FamilyTree();
+	tree.initialize(familyTree);
+<% end %> -->
+
 <div id="family_tree">
 	
 </div>
