@@ -1,3 +1,12 @@
+$(function() {
+	var tree = new FamilyTree();
+	tree.init();
+	// var json = tree.getJson();
+	// tree.initialize(json);
+});
+
+
+/*
 function family() {
 	this.init = function(data) {
 		this.data = data;
@@ -86,3 +95,4 @@ var family_data = {
 		}
 	]
 };
+*/

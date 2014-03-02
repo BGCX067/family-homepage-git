@@ -6,7 +6,7 @@ function VisEdge(options) {
 	    this.animationSpeed = GRAPHICS.defaultAnimationTime;
 	    this.animationEasing = GRAPHICS.defaultEasing;
 	    
-	    this.isBesier = false; // besier curve if true, straight line otherwise
+	    // this.isBesier = false; // besier curve if true, straight line otherwise
 	    
 	    options = options || {};
 	    this.options = options;
@@ -14,24 +14,27 @@ function VisEdge(options) {
 	    	this[key] = options[key];
 	    }
 	};
+	
+	this.isAlive = function() {
+		return this.tail.alive;
+	};
 
 	this.genGraphics = function(paper) {
 		var pathString = this.getBezierCurve();
 
 		var path = paper.path(pathString).attr({
-			'stroke-width' : GRAPHICS.visBranchStrokeWidth,
+			'stroke-width' : 2,
 			'stroke' : this.getStrokeColor(),
 			'stroke-linecap' : 'round',
 			'stroke-linejoin' : 'round',
 			'fill' : this.getStrokeColor()
 		});
 		path.toBack();
-		// this.set('path', path);
 		this.path = path;
 	};
 	
 	this.getStrokeColor = function() {
-		
+		return '#666';
 	};
 
 	this.getAttributes = function() {
@@ -46,7 +49,7 @@ function VisEdge(options) {
 	};
 	
 	this.getOpacity = function() {
-		
+		return 1;
 	};
 
 	this.genSmoothBezierPathString = function(tail, head) {
@@ -60,7 +63,8 @@ function VisEdge(options) {
 		// is M(move abs) C (curve to) (control point 1) (control point 2) (final point)
 		// the control points have to be __below__ to get the curve starting off straight.
 
-		var flipFactor = (GlobalState.flipTreeY) ? -1 : 1;
+		// would be useful if xiangxiang get married and the tree grows in the opposite direction
+		var flipFactor = -1; 
 		var coords = function(pos) {
 			return String(Math.round(pos.x)) + ',' + String(Math.round(pos.y));
 		};
@@ -79,10 +83,12 @@ function VisEdge(options) {
 		};
 
 		// first offset tail and head by radii
-		// tailPos = offset(tailPos, -1, this.get('tail').getRadius());
-		// headPos = offset(headPos, 1, this.get('head').getRadius() * 1.15);
-		tailPos = offset(tailPos, -1, this.tail.getRadius());
-		headPos = offset(headPos, 1, this.head.getRadius() * 1.15);
+		if (this.isAlive()) {
+			tailPos = offset(tailPos, -1, this.tail.getRadius() * 1.85);
+		} else {
+			tailPos = offset(tailPos, -1, this.tail.getRadius() * 2.15);
+		}
+		headPos = offset(headPos, 1, this.head.getRadius() * 1.05);
 
 		var str = '';
 		// first move to bottom of tail
@@ -96,10 +102,10 @@ function VisEdge(options) {
 		str += coords(headPos);
 
 		// arrow head
-		var delta = GRAPHICS.arrowHeadSize || 10;
-		str += ' L' + coords(offset2d(headPos, -delta, delta));
-		str += ' L' + coords(offset2d(headPos, delta, delta));
-		str += ' L' + coords(headPos);
+		// var delta = GRAPHICS.arrowHeadSize || 10;
+		// str += ' L' + coords(offset2d(headPos, -delta, delta));
+		// str += ' L' + coords(offset2d(headPos, delta, delta));
+		// str += ' L' + coords(headPos);
 
 		// then go back, so we can fill correctly
 		str += 'C';
@@ -111,7 +117,6 @@ function VisEdge(options) {
 	};
 
 	this.getBezierCurve = function() {
-		// return this.genSmoothBezierPathString(this.get('tail'), this.get('head'));
 		return this.genSmoothBezierPathString(this.tail, this.head);
 	};
 	

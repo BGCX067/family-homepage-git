@@ -10,14 +10,16 @@ function FamilyTree() {
 		// this.baseId = options.baseId;
 		// this.members = options.members;
 		
-		this.familyVisuals = new FamilyVisuals(options);
-		this.familyVisuals.refreshTree();
+		this.familyVisuals = new FamilyVisuals();
+		this.familyVisuals.initialize(options);
+		this.familyVisuals.initialBuildTree();
 	};
 	
-	this.getJson = function() {
+	this.init = function() {
 		var _this = this;
 		$.ajax({
-			url: "/family_tree.json",
+			type: "get",
+			url: "/family_tree/members",
 			dataType: "json"
 		}).done(function(data) {
 			_this.initialize(data);
@@ -25,6 +27,4 @@ function FamilyTree() {
 			// TODO: 
 		});
 	};
-
-	this.getJson();
 }

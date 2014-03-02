@@ -1,0 +1,174 @@
+---
+- !ruby/object:Member
+  uuid: 1
+  alive: true
+  gender: female
+  childrenId: 
+  parentsId:
+  - 2
+  - 3
+  name: 顾伊冉
+  birth: '2013-10-22'
+- !ruby/object:Member
+  uuid: 2
+  alive: true
+  gender: female
+  childrenId:
+  - 1
+  parentsId:
+  - 11
+  - 10
+  name: 郑艳花
+  birth: '1985-11-27'
+- !ruby/object:Member
+  uuid: 3
+  alive: true
+  gender: male
+  childrenId:
+  - 1
+  parentsId:
+  - 4
+  - 5
+  name: 顾俊
+  birth: '1986-07-05'
+  wifeId: 2
+- !ruby/object:Member
+  uuid: 4
+  alive: true
+  gender: female
+  childrenId:
+  - 3
+  parentsId:
+  - 9
+  - 8
+  name: 张巧英
+  birth: '1963-6-10'
+- !ruby/object:Member
+  uuid: 5
+  alive: true
+  gender: male
+  childrenId:
+  - 3
+  parentsId:
+  - 7
+  - 6
+  name: 顾建华
+  birth: '1962-6-10'
+  wifeId: 4
+- !ruby/object:Member
+  uuid: 6
+  alive: true
+  gender: female
+  childrenId:
+  - 5
+  parentsId: 
+  name: 朱彩英
+  birth: '1924-12-12'
+- !ruby/object:Member
+  uuid: 7
+  alive: true
+  gender: male
+  childrenId:
+  - 5
+  parentsId: 
+  name: 顾小元
+  birth: '1924-11-11'
+  wifeId: 6
+- !ruby/object:Member
+  uuid: 8
+  alive: false
+  gender: female
+  childrenId:
+  - 4
+  parentsId: 
+  name: 陆妙根
+  birth: '1924-12-12'
+  death: '2012-05-05'
+- !ruby/object:Member
+  uuid: 9
+  alive: false
+  gender: male
+  childrenId:
+  - 4
+  parentsId: 
+  name: 张阿梅
+  birth: '1924-11-11'
+  wifeId: 8
+  death: '2011-10-27'
+- !ruby/object:Member
+  uuid: 10
+  alive: true
+  gender: female
+  childrenId:
+  - 2
+  parentsId:
+  - 15
+  - 14
+  name: 陈建球
+  birth: '1963-6-10'
+- !ruby/object:Member
+  uuid: 11
+  alive: true
+  gender: male
+  childrenId:
+  - 2
+  parentsId:
+  - 13
+  - 12
+  name: 郑栋成
+  birth: '1962-6-10'
+  wifeId: 10
+- !ruby/object:Member
+  uuid: 12
+  alive: false
+  gender: female
+  childrenId:
+  - 11
+  parentsId: 
+  name: unknow1
+  birth: '1924-12-12'
+  death: '2011-10-27'
+- !ruby/object:Member
+  uuid: 13
+  alive: false
+  gender: male
+  childrenId:
+  - 11
+  parentsId: 
+  name: unknow2
+  birth: '1924-11-11'
+  wifeId: 12
+  death: '2011-10-27'
+- !ruby/object:Member
+  uuid: 14
+  alive: false
+  gender: female
+  childrenId:
+  - 10
+  parentsId: 
+  name: unknow3
+  birth: '1924-12-12'
+  death: '2011-10-27'
+- !ruby/object:Member
+  uuid: 15
+  alive: false
+  gender: male
+  childrenId:
+  - 10
+  parentsId: 
+  name: unknow4
+  birth: '1924-11-11'
+  wifeId: 14
+  death: '2011-10-27'
+--- !ruby/object:Member
+uuid: 1
+alive: true
+gender: female
+childrenId: 
+parentsId:
+- 2
+- 3
+name: 顾伊冉
+birth: '2013-10-22'
+--- 1
+...

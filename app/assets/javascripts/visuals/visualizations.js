@@ -6,10 +6,12 @@ function FamilyVisuals() {
 		// this.containerElement = options.containerElement;
 
 		this.baseId = options.baseId;
-		this.familyTree = options.familyTree;
+		this.familyTree = options.members;
 		
 		this.visMemberMap = {};
 		this.visEdgeCollection = [];
+		
+		this.genTree(options.members);
 
 		this.containerElement = $("#family_tree");
 
@@ -31,11 +33,12 @@ function FamilyVisuals() {
 		// this.base = options.base;
   
 		this.resizePaper();
+		console.log('paper finished initialization');
 
+		// use this to dynamically render family tree later
 		$(window).on('resize', _.bind(function() {
 			this.resizePaper();
-		}, this)); 
-
+		}, this));
 	};
 
 	this.genTree = function(members) {
@@ -43,7 +46,7 @@ function FamilyVisuals() {
 		// create member node
 		_.each(members, function(member, index) {
 			this.validateMemberJson(member);
-			this.genMember(member);
+			this.addMember(member);
 		}, this);
 		// build tree, suppose:
 		// 1. baseMember has no children
@@ -71,7 +74,7 @@ function FamilyVisuals() {
 			member.addParent(parent);
 			parent.addChild(member);
 
-			this.buildTreeRecursive(parentId);
+			this.buildTreeNodeRecursive(parentId);
 		}, this);
 
 		var parents = member.parents;
@@ -96,7 +99,8 @@ function FamilyVisuals() {
 		}
 		
 		_.each(parents, function(parent) {
-			this.addEdge(id, parent);
+			this.addEdge(parent.uuid, id);
+			this.buildTreeEdgeRecursive(parent.uuid);
 		}, this);
 	};
 
@@ -116,18 +120,18 @@ function FamilyVisuals() {
 			throw new Error('at least one of the ids in (' + idTail + ', ' + idHead + ') does not exist');
 		}
 		
-		var isBezier = this.isBase() || visMemberHead.isMale();
+		// var isBezier = this.isBase() || visMemberHead.isMale();
 		var visEdge = new VisEdge({
-			tail: idTail,
-			head: idHead,
-			isBesier: isBesier
+			tail: visMemberTail,
+			head: visMemberHead
+			// isBesier: isBesier
 			/* TODO: other options */
 		});
 		this.visEdgeCollection.push(visEdge);
 	};
 	
 	this.isBase = function(id) {
-		return id == this.baseId ? true : false;
+		return id === this.baseId ? true : false;
 	};
 
 	this.validateMemberJson = function(member) {
@@ -150,6 +154,13 @@ function FamilyVisuals() {
 	};
 	
 	// start for drawing tree
+	this.initialBuildTree = function() {
+		this.fullCalc();
+		console.log("start to render", this.paper == null);
+		this.initialBuildMembers();
+		this.initialBuildEdges();
+	};
+	
 	this.refreshTree = function() {
 		this.fullCalc();
 		
@@ -178,6 +189,10 @@ function FamilyVisuals() {
 			// return depth;
 		// }
 		var maxDepth = depth;
+		// for (var i = 0, length = parents.length; i < length; i++) {
+			// var d = this.calcMaxDepthRecusive(parents[i].uuid, depth + 1);
+			// maxDepth = Math.max(maxDepth, d);
+		// }
 		_.each(parents, function(parent) {
 			var d = this.calcMaxDepthRecusive(parent.uuid, depth + 1);
 			maxDepth = Math.max(maxDepth, d);
@@ -193,13 +208,16 @@ function FamilyVisuals() {
 		// if (!parents || _.isEmpty(parents)) {
 			// return;
 		// }
+		// for (var i = 0, length = parents.length; i < length; i++) {
+			// this.calcDepthRecursive(parents[i].uuid, depth - 1);
+		// }
 		_.each(parents, function(parent) {
 			this.calcDepthRecursive(parent.uuid, depth - 1);
 		}, this);
 	};
 	
 	this.calcWidth = function() {
-		this.calcMaxWidthRecursive();
+		this.calcMaxWidthRecursive(this.baseId);
 		var bounds = this.getPosBoundaries();
 		this.assignBoundsRecursive(this.baseId, bounds.min, bounds.max);
 	};
@@ -223,7 +241,7 @@ function FamilyVisuals() {
 	this.assignBoundsRecursive = function(id, min, max) {
 		var member = this.visMemberMap[id];
 		var pos = (min + max) / 2;
-		member.pos.x = pox;
+		member.pos.x = pos;
 		var parents = member.parents;
 		if (!parents || _.isEmpty(parents)) {
 			return;
@@ -250,7 +268,7 @@ function FamilyVisuals() {
 	
 	// would be useful if to support different resolutions
 	this.getMinLayers = function() {
-		return 6;
+		return 2;
 	};
 	
 	this.getDepthIncrement = function(maxDepth) {
@@ -259,6 +277,20 @@ function FamilyVisuals() {
 		maxDepth = Math.max(maxDepth, this.getMinLayers());
 		var increment = 1.0 / maxDepth;
 		return increment;
+	};
+	
+	this.initialBuildMembers = function() {
+		var paper = this.paper;
+		_.each(this.visMemberMap, function(member) {
+			member.genGraphics(paper);
+		});
+	};
+	
+	this.initialBuildEdges = function() {
+		var paper = this.paper;
+		_.each(this.visEdgeCollection, function(edge) {
+			edge.genGraphics(paper);
+		});
 	};
 	
 	// end for drawing tree
@@ -286,8 +318,27 @@ function FamilyVisuals() {
 		this.paper.setSize(width, height);
 
 	};
+	
+	// in later version, we may support animations
+	// this.animateAll = function(speed) {
+		// // TODO: need to reflow z-index?
+		// this.animateEdges(speed);
+		// this.animateNodePositions(speed);
+	// };
+// 	
+	// this.animateEdges = function(speed) {
+		// _.each(this.visEdgeCollection, function(edge) {
+			// edge.animateUpdatedPath(speed);
+		// }, this);
+	// };
+// 	
+	// this.animateNodePositions = function(speed) {
+		// _.each(this.visMemberMap, function(member) {
+			// member.animateUpdatedPosition(speed);
+		// }, this);
+	// };
 
-	this.initialize();
+	// this.initialize(options);
 }
 
 FamilyVisuals.prototype.toScreenCoords = function(pos) {
@@ -315,8 +366,8 @@ FamilyVisuals.prototype.toScreenCoords = function(pos) {
 
 FamilyVisuals.prototype.getScreenPadding = function() {
 	return {
-		widthPadding: GRAPHICS.nodeRadius * 1.5,
+		widthPadding: GRAPHICS.nodeRadius * 0.5,
 		topHeightPadding: GRAPHICS.nodeRadius * 1.5,
-		bottomHeightPadding: GRAPHICS.nodeRadius * 3
+		bottomHeightPadding: GRAPHICS.nodeRadius * 2
 	};
 };

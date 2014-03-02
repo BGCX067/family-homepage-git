@@ -8,7 +8,7 @@ function VisMember(options) {
 		this.birth = "1900-01-01";
 		this.alive = true;
 		this.death = "2100-01-01"; // use this only when alive is false
-		this.image = "assets\images\member\notfound.jpg";
+		this.image = "assets/members/not_found.png";
 		this.parentsId = null;
 		this.childrenId = null;
 		this.spouseId = null;
@@ -62,12 +62,12 @@ function VisMember(options) {
 	// TODO: optimize following two functions
 	this.addChild = function() {
 		this.children = this.children || [];
-		this.children.concat(_.flatten(arguments));
+		this.children = this.children.concat(_.flatten(arguments));
 	};
 
 	this.addParent = function() {
 		this.parents = this.parents || [];
-		this.parents.concat(_.flatten(arguments));
+		this.parents = this.parents.concat(_.flatten(arguments));
 	};
 
 	// here we only use this for male
@@ -84,7 +84,7 @@ function VisMember(options) {
 		return {
 			circle: {
 				cx: pos.x,
-				cy: pox.y,
+				cy: pos.y,
 				opacity: opacity,
 		        r: this.getRadius(),
 		        // fill: this.getFill(),
@@ -92,10 +92,17 @@ function VisMember(options) {
 		        stroke: this.stroke
 			},
 			info: {
-				
+				x: pos.x,
+				y: pos.y,
+				opacity: opacity
+			},
+			image: {
+				src: this.image
 			}
 		};
 	};
+	
+	this.getOpacity = function() { return 1; };
 	
 	this.getScreenCoords = function() {
 		var pos = this.pos;
@@ -109,11 +116,15 @@ function VisMember(options) {
 	// for drawing
 	this.genGraphics = function() {
 		var paper = this.familyVisuals.paper;
-		var circle = this.makeCircle();
-		var info = this.makeText();
-		var gender = this.makeGender();
+		var circle = this.makeCircle(paper);
+		var image = this.makeImage(paper);
+		var info = this.makeText(paper);
+		var gender = this.makeGender(paper);
+		
+		circle.toFront();
 		
 		this.circle = circle;
+		this.image = image;
 		this.info = info;
 		this.gender = gender;
 	};
@@ -126,19 +137,35 @@ function VisMember(options) {
 			this.getRadius()
 		).attr(this.getAttributes().circle);
 	};
-
 	
+	this.makeImage = function(paper) {
+		var pos = this.getScreenCoords();
+		return paper.image(this.image, pos.x - this.getRadius(), pos.y - this.getRadius(), 2 * this.getRadius(), 2 * this.getRadius());
+	};
+
 	this.makeText = function(paper) {
-		return paper.text();
+		function alignTop(text) {
+ 			var b = text.getBBox();
+ 			var h = Math.abs(b.y2) - Math.abs(b.y) + 1;
+ 			text.attr({'y': b.y + h});
+ 			return text;
+		}
+		var pos = this.getScreenCoords();
+		var textString = this.name + "\n" + this.birth;
+		if (!this.alive) {
+			textString += "\n" + this.death;
+		}
+		var text = paper.text(pos.x, pos.y + this.getRadius() + 1, textString);
+		return alignTop(text);
 	};
 	
 	this.makeGender = function(paper) {
-		return paper.path();
+		
 	};
 	
 	this.setDepthBasedOn = function(increment) {
-		if (!this.depth) {
-			throw new Error("no depth yet");
+		if (this.depth == undefined) {
+			throw new Error(this.name + " no depth yet");
 		}
 		this.pos.y = this.depth * increment;
 	};
