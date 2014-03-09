@@ -1,0 +1,61 @@
+---
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip01.jpg
+  thumbSrc: /assets/gallery/thumbstrip01.thumb.png
+  title: '1'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip02.jpg
+  thumbSrc: /assets/gallery/thumbstrip02.thumb.png
+  title: '2'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip03.jpg
+  thumbSrc: /assets/gallery/thumbstrip03.thumb.png
+  title: '3'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip04.jpg
+  thumbSrc: /assets/gallery/thumbstrip04.thumb.png
+  title: '4'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip05.jpg
+  thumbSrc: /assets/gallery/thumbstrip05.thumb.png
+  title: '5'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip06.jpg
+  thumbSrc: /assets/gallery/thumbstrip06.thumb.png
+  title: '6'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip07.jpg
+  thumbSrc: /assets/gallery/thumbstrip07.thumb.png
+  title: '7'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip08.jpg
+  thumbSrc: /assets/gallery/thumbstrip08.thumb.png
+  title: '8'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip09.jpg
+  thumbSrc: /assets/gallery/thumbstrip09.thumb.png
+  title: '9'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip10.jpg
+  thumbSrc: /assets/gallery/thumbstrip10.thumb.png
+  title: '10'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip11.jpg
+  thumbSrc: /assets/gallery/thumbstrip11.thumb.png
+  title: '11'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip12.jpg
+  thumbSrc: /assets/gallery/thumbstrip12.thumb.png
+  title: '12'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip13.jpg
+  thumbSrc: /assets/gallery/thumbstrip13.thumb.png
+  title: '13'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip14.jpg
+  thumbSrc: /assets/gallery/thumbstrip14.thumb.png
+  title: '14'
+- !ruby/object:GalleryImage
+  src: /assets/gallery/thumbstrip15.jpg
+  thumbSrc: /assets/gallery/thumbstrip15.thumb.png
+  title: '15'

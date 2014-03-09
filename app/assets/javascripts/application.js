@@ -13,6 +13,6 @@
 //= require raphael-min
 //= require underscore-min
 //= require jquery-1.11.0.min
-//= require jquery_ujs
-//= require turbolinks
-//= require_tree .
+//
+// I removed jquery_ujs and turbolinks since I don't know how to use them.
+// Page specific resources won't be loaded when I click on links, even I listened for `page:load' event.
