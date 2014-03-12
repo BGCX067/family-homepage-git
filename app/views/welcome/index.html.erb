@@ -2,22 +2,40 @@
 	<%= javascript_include_tag params[:controller] %>
 	
 	<%= javascript_tag do %>
+	var controlsLang = {
+		previousTitle: "<%= t :previousTitle %>",
+		previousText: "<%= t :previousText %>",
+		playTitle: "<%= t :playTitle %>",
+		playText: "<%= t :playText %>",
+		pauseTitle: "<%= t :pauseTitle %>",
+		pauseText: "<%= t :pauseText %>",
+		nextTitle: "<%= t :nextTitle %>",
+		nextText: "<%= t :nextText %>",
+		moveTitle: "<%= t :moveTitle %>",
+		moveText: "<%= t :moveText %>",
+		fullExpandTitle: "<%= t :fullExpandTitle %>",
+		fullExpandText: "<%= t :fullExpandText %>",
+		closeTitle: "<%= t :closeTitle %>",
+		closeText: "<%= t :closeText %>"
+	};
+	
 	function init() {
 		$.ajax({
 			type: "get",
 			url: "/welcome/gallery",
 			dataType: "json"
 		}).done(function(data) {
-			gallery.container = document.getElementById("gallery");
-			gallery.images = data.images;
-			var opt = {};
-			_.extend(opt, {
-				gallery: gallery,
-				width: 700,
-				position: 'bottom',
-				offsetY: 50
-			});
-			var thumbnails = new Thumbstrip(opt);
+			gallery.initialize(data);
+			//gallery.container = document.getElementById("gallery");
+			//gallery.images = data.images;
+			//var opt = {};
+			//_.extend(opt, {
+			//	gallery: gallery,
+			//	width: 700,
+			//	position: 'bottom',
+			//	offsetY: 50
+			//});
+			//var thumbnails = new Thumbstrip(opt);
 		}).fail(function() {
 			// TODO: 
 		});

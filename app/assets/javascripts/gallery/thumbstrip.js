@@ -43,18 +43,50 @@ function Thumbstrip(gallery, options) {
 	
 	var _this = this;
 	
-	function scroll (delta) {
+	function getIndex() {
+		if (_this.curAnchor == null) {
+			return -1;
+		}
+		return _.indexOf(_this.anchors, this.curAnchor);
+	}
+	
+	function scroll(delta) {
 		selectThumb(undefined, Math.round(delta * dom['offsetWidth'] * 0.7));
 	};
 	
-	function selectThumb (i, scrollBy) {
-		if (i === undefined) {
-			if (_this.curAnchor == null) {
-				return;
-			}
-			i = _.indexOf(_this.anchors, this.curAnchor);
-		}
+	function selectPreOrNextThumb(dir) {
+		var i = getIndex();
 		if (i == -1) return;
+		
+		var len = _this.anchors.length,
+			sign = dir / Math.abs(dir); // in case dir is not [-1, 1]
+		i = (i + sign + len) % len;
+		selectThumb(i);
+	};
+	
+	function select(i, scrollby, dir) {
+		var i = getIndex();
+		if (i == -1) return;
+		var len = _this.anchors.length,
+			sign;
+		if (dir == 0) {
+			sign = 0;
+		} else {
+			sign = dir / Math.abs(dir);
+		}
+		i = (i + sign + len) % len;
+		selectThumb(i, scrollby);
+	};
+	
+	function selectThumb(i, scrollBy) {
+		// if (i === undefined) {
+			// if (_this.curAnchor == null) {
+				// return;
+			// }
+			// i = _.indexOf(_this.anchors, this.curAnchor);
+		// }
+		// if (i == -1) return;
+		if (i === undefined || getIndex() == -1) return;
 
 		var as = dom.getElementsByTagName('a'),
 			active = as[i],
@@ -99,17 +131,13 @@ function Thumbstrip(gallery, options) {
 		tree = ['table', 'tbody', 'tr', 'td'],
 		dom = xx.createElement('div', {
 				id: 'thumbstrip',
-				// className: 'highslide-thumbstrip highslide-thumbstrip-'+ mode,
+				className: 'gallery-thumbstrip gallery-thumbstrip-'+ mode,
 				innerHTML:
-					// '<div class="highslide-thumbstrip-inner">'+
-					'<div>'+
+					'<div class="gallery-thumbstrip">'+
 					'<'+ tree[0] +'><'+ tree[1] +'></'+ tree[1] +'></'+ tree[0] +'></div>'+
-					// '<div class="highslide-scroll-up"><div></div></div>'+
-					// '<div class="highslide-scroll-down"><div></div></div>'+
-					// '<div class="highslide-marker"><div></div></div>'
-					'<div><div></div></div>'+
-					'<div><div></div></div>'+
-					'<div><div></div></div>'
+					'<div class="gallery-scroll-up"><div></div></div>'+
+					'<div class="gallery-scroll-down"><div></div></div>'+
+					'<div class="gallery-marker"><div></div></div>'
 			}, {
 				display: 'none'
 			}, this.gallery.container),
@@ -122,7 +150,7 @@ function Thumbstrip(gallery, options) {
 		tbody = table.firstChild,
 		tr;
 		
-	_.each(this.images, function(image, index) {
+	_.each(this.gallery.images, function(image, index) {
 		if (index == 0) {
 			tr = xx.createElement(tree[2], null, null, tbody);
 		}
@@ -148,6 +176,10 @@ function Thumbstrip(gallery, options) {
 	
 	scrollUp.onclick = function () { scroll(-1); };
 	scrollDown.onclick = function() { scroll(1); };
+	
+	// return {
+		// select: select
+	// };
 }
 
 // function extendBase(ctor, base) {

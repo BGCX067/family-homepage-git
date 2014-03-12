@@ -2,11 +2,15 @@
  * @author gu jun
  */
 
-var Slideshow = function(options) {
-	_.extend(this, options);
-	if (this.useControls) this.getControls();
-	// TODO: fix this
-	// if (this.thumbstrip) this.thumbstrip = gallery.Thumbstrip(this);
+var Slideshow = function(gallery, options) {
+	this.gallery = gallery;
+	this.options = options || {};
+	_.extend(this, this.options);
+	
+	if (this.useControls) {
+		this.getControls();
+	}
+	
 };
 
 Slideshow.prototype = {
@@ -16,15 +20,15 @@ getControls: function() {
 		'div', 
 		{ 
 			id: 'slideshow',
-			innerHTML: gallery.replaceLang(),
+			innerHTML: this.gallery.replaceLang(this.gallery.skin.controls),
 		}, 
-		null, gallery.container);
+		null, this.gallery.container);
 	
 	var buttons = ['play', 'pause', 'previous', 'next', 'move', 'full-expand', 'close'];
 	this.btn = {};
 	var pThis = this;
 	for (var i = 0; i < buttons.length; i++) {
-		this.btn[buttons[i]] = gallery.getElementByClass(this.controls, 'li', 'higgallerylide-'+ buttons[i]);
+		this.btn[buttons[i]] = xx.getElementByClass(this.controls, 'li', 'gallery-'+ buttons[i]);
 		this.enable(buttons[i]);
 	}
 	this.btn.pause.style.display = 'none';
@@ -78,7 +82,7 @@ play: function(wait) {
 	}
 	
 	this.autoplay = true;	
-	if (!wait) gallery.next(this.expKey);
+	if (!wait) gallery.next();
 },
 
 pause: function() {
@@ -93,21 +97,18 @@ pause: function() {
 
 previous: function() {
 	this.pause();
-	gallery.previous(this.btn.previous);
+	this.gallery.previous(this.btn.previous);
 },
 
 next: function() {
 	this.pause();
-	gallery.next(this.btn.next);
+	this.gallery.next(this.btn.next);
 },
 
 move: function() {},
-'full-expand': function() {
-	gallery.getExpander().doFullExpand();
-},
 
-close: function() {
-	gallery.close(this.btn.close);
-}
+'full-expand': function() {},
+
+close: function() {}
 
 };

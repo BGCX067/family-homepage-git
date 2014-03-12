@@ -10,7 +10,7 @@ var Animation = function(elem, options, prop) {
 	this.prop = prop;
 };
 
-Aanimation.prototype = {
+Animation.prototype = {
 	timers: [],
 	// timerId: undefined,
 	
@@ -84,7 +84,7 @@ Aanimation.prototype = {
 };
 
 
-_.extend(Animation.step, {
+_.extend(Animation.prototype.step, {
 	step: {
 
 		opacity: function(fx){
