@@ -1,0 +1,97 @@
+/*********************************************
+ * gallery thumbstrip default styles
+ *********************************************/
+.gallery-thumbstrip {
+	position: relative;
+	height: 100%;
+}
+
+.gallery-thumbstrip div {
+	overflow: hidden;
+}
+
+.gallery-thumbstrip table {
+	border-collapse: collapse;
+}
+
+.gallery-thumbstrip td {
+	padding: 1px;
+}
+
+.gallery-thumbstrip a {
+	
+}
+
+.gallery-thumbstrip img {
+	display: block;
+	border: 1px solid gray;
+	margin: 0 auto;
+}
+
+.gallery-thumbstrip .gallery-active-anchor img {
+	
+}
+
+.gallery-thumbstrip .gallery-marker {
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-width: 0;
+	border-style: solid;
+	border-color: transparent;
+}
+
+/*********************************************
+ * gallery thumbstrip horizontal styles
+ *********************************************/
+.gallery-thumbstrip-horizontal div {
+	width: auto;
+}
+
+.gallery-thumbstrip-horizontal .gallery-scroll-up {
+	display: block;
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 25px;
+	height: 72px;
+}
+
+.gallery-thumbstrip-horizontal .gallery-scroll-up div {
+	margin-bottom: 12px;
+	cursor: pointer;
+	background: url(/assets/gallery/scrollarrows.png) left center no-repeat;
+	height: 72px;
+}
+
+.gallery-thumbstrip-horizontal .gallery-scroll-down {
+	display: block;
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	width: 25px;
+	height: 72px;
+}
+
+.gallery-thumbstrip-horizontal .gallery-scroll-down div {
+	margin-bottom: 12px;
+	cursor: pointer;
+	background: url(/assets/gallery/scrollarrows.png) center right no-repeat;
+	height: 72px;	
+}
+
+.gallery-thumbstrip-horizontal table {
+	margin: 2px 0 12px 0;
+}
+
+.gallery-thumbstrip-horizontal img {
+	width: auto;
+	height: 70px;
+}
+
+.gallery-thumbstrip-horizontal .gallery-marker {
+	top: 77px;
+	border-left-width: 8px;
+	border-right-width: 8px;
+	border-bottom: 8px solid gray;
+}
