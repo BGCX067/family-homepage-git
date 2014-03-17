@@ -43,14 +43,26 @@ initialize: function(options) {
 	this.options = options;
 	this.images = options.images;
 	this.controlsLang = options.controlsLang || controlsLang;
-	this.wrapperClassName = options.wrapperClassName || '';
+	this.wrapperClassName = options.wrapperClassName || "in-page";
 	// image, caption, slideshow, thumbstrip will be put in
 	this.containerId = options.containerId || 'gallery';
 	this.container = document.getElementById(this.containerId);
 	
 	// default value
+	this.ratio = 3/2;
 	this.width = 700;
-	this.heigh = 500;
+	this.height = Math.floor(this.width / this.ratio);
+	
+	// http://www.robertpenner.com/easing/ 
+	Math.linearTween = function (t, b, c, d) {
+		return c*t/d + b;
+	};
+	Math.easeInQuad = function (t, b, c, d) {
+		return c*(t/=d)*t + b;
+	};
+	Math.easeOutQuad = function (t, b, c, d) {
+		return -c *(t/=d)*(t-2) + b;
+	};
 	
 	this.initComponents();
 },
@@ -112,13 +124,54 @@ _.extend(gallery, {
 	}
 });
 
+/* delegate photo */
+_.extend(gallery, {	
+	transit: function(src, nextSrc) {
+		this.photo.transit(src, nextSrc);
+	}
+});
+
+/* delegate thumbstrip */
 _.extend(gallery, {
-	previous: function() {
-		
+	selectNeighborThumb: function(dir) {
+		this.thumbstrip.selectPreOrNextThumb(dir);
+	},
+	selectThumb: function(i) {
+		this.thumbstrip.selectThumb(i);
+	}
+});
+
+/* preload image */
+_.extend(gallery, {
+	continePreloading: true,
+	preloadImageSize: 5,
+	imagesToPreload: [],
+	
+	preloadFullImage: function(i) {
+		if (this.continuePreloading && this.imagesToPreload[i] && hs.imagesToPreload[i] != 'undefined') {
+			var img = document.createElement('img');
+			img.onload = function() { 
+				img = null;
+				hs.preloadFullImage(i + 1);
+			};
+			img.src = hs.imagesToPreload[i];
+		}
 	},
 	
-	next: function() {
-		
+	preloadImages: function(number) {
+		if (number === undefined) {
+			number = this.preloadImageSize;
+		}
+		var n = Math.max(number, this.images.length),
+			i;
+		for (i = 0; i < n; i++) {
+			xx.push(this.imagesToPreload, this.images[i].src);
+		}
+		preloadFullImage(0);
+	},
+	
+	preloadThumbImages: function() {
+		// TODO: fill in
 	}
 });
 

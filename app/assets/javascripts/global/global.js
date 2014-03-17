@@ -42,26 +42,29 @@ setStyles: function (el, styles) {
 		// else el.style[x] = styles[x];	
 		// el.style[x] = styles[x];	
 	// }
-	_.extend(el, styles);
+	_.extend(el.style, styles);
 },
 
 animate: function(el, prop, opt) {
 	var start,
 		end,
 		unit;
+		options;
 	if (typeof opt != 'object' || opt === null) {
 		var args = arguments;
-		opt = {
+		options = {
 			duration: args[2],
 			easing: args[3],
 			complete: args[4]
 		};
+	} else {
+		options = opt;
 	}
-	if (typeof opt.duration != 'number') opt.duration = 250;
-	opt.easing = Math[opt.easing] || Math.easeInQuad;
-	opt.curAnim = xx.extend({}, prop);
+	if (typeof options.duration != 'number') options.duration = 250;
+	options.easing = Math[options.easing] || Math.easeInQuad;
+	options.curAnim = xx.extend({}, prop);
 	_.each(prop, function(value, key) {
-		var e = new xx.fx(el, opt, key);
+		var e = new Animation(el, options, key);
 		
 		start = parseFloat(xx.css(el, key)) || 0;
 		end = parseFloat(value);

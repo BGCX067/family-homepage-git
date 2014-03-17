@@ -86,7 +86,7 @@ function Thumbstrip(gallery, options) {
 			// i = _.indexOf(_this.anchors, this.curAnchor);
 		// }
 		// if (i == -1) return;
-		if (i === undefined || getIndex() == -1) return;
+		if (i === undefined && (i = getIndex()) == -1) return;
 
 		var as = dom.getElementsByTagName('a'),
 			active = as[i],
@@ -98,11 +98,12 @@ function Thumbstrip(gallery, options) {
 			offsetLeft = 'offset' + left,
 			offsetWidth = 'offset' + width,
 			// overlayWidth = div.parentNode.parentNode[offsetWidth],
-			overlayWidth = 600; // hard coded for now
+			overlayWidth = dom.offsetWidth,
 			minTblPos = overlayWidth - table[offsetWidth],
 			curTblPos = parseInt(table.style['left']) || 0,
 			tblPos = curTblPos,
 			mgnRight = 20;
+		this.curAnchor = active;
 		if (scrollBy !== undefined) {
 			tblPos = curTblPos - scrollBy;
 			
@@ -113,7 +114,7 @@ function Thumbstrip(gallery, options) {
 			_.each(as, function(a, index) {
 				a.className = '';
 			});
-			// active.className = 'highslide-active-anchor'; //TODO:
+			active.className = 'gallery-active-anchor';
 			var activeLeft = i > 0 ? as[i - 1].parentNode[offsetLeft] : cell[offsetLeft],
 				activeRight = cell[offsetLeft] + cell[offsetWidth] + 
 					(as[i + 1] ? as[i + 1].parentNode[offsetWidth] : 0);
@@ -139,7 +140,7 @@ function Thumbstrip(gallery, options) {
 					'<div class="gallery-scroll-down"><div></div></div>'+
 					'<div class="gallery-marker"><div></div></div>'
 			}, {
-				display: 'none'
+				display: 'block'
 			}, this.gallery.container),
 		domCh = dom.childNodes,
 		div = domCh[0],
@@ -149,8 +150,8 @@ function Thumbstrip(gallery, options) {
 		table = div.firstChild,
 		tbody = table.firstChild,
 		tr;
-		
-	_.each(this.gallery.images, function(image, index) {
+
+	_.each(this.gallery.images, function(image, index, images) {
 		if (index == 0) {
 			tr = xx.createElement(tree[2], null, null, tbody);
 		}
@@ -160,10 +161,13 @@ function Thumbstrip(gallery, options) {
 					href: image.src,
 					title: image.title,
 					onclick: function() {
-						// TODO: fill this in
-						// if (/highslide-active-anchor/.test(this.className)) return false;
-						// this.gallery.getExpander(this).focus();
-						// return this.gallery.transit(a);
+						if (/gallery-active-anchor/.test(this.className)) {
+							return false;
+						}
+						selectThumb(index);
+						var next = (index + 1) == images.length ? null : images[index + 1].src;
+						thumbstrip.gallery.transit(image.src, next);
+						return false;
 					},
 					innerHTML: "<img src='" + image.thumbSrc + "'>"
 				};
@@ -177,9 +181,34 @@ function Thumbstrip(gallery, options) {
 	scrollUp.onclick = function () { scroll(-1); };
 	scrollDown.onclick = function() { scroll(1); };
 	
-	// return {
-		// select: select
-	// };
+	// we need to fire this event when all thumbnails have been loaded
+	// don't know why 'load' event does not work
+	(function() {
+		var imgs = $("#thumbstrip img");
+		var count = imgs.length;
+		
+		imgs.load(function() {
+		    count--;
+		    if (!count) {
+		    	_this.anchors[0].onclick();
+		    }
+		}).filter(function() { return this.complete; }).load();
+	})();
+
+	// window.addEventListener('load', function() {
+		// _this.anchors[0].onclick();
+	// });
+	// $('#thumbstrip').on('load', function() {
+		// _this.anchors[0].onclick();
+	// });
+	// $(document).ready(function() {
+		// _this.anchors[0].onclick();
+	// });
+	
+	return {
+		selectPreOrNextThumb: selectPreOrNextThumb,
+		selectThumb: selectThumb
+	};
 }
 
 // function extendBase(ctor, base) {

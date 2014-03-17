@@ -4,6 +4,7 @@
 .gallery-thumbstrip {
 	position: relative;
 	height: 100%;
+	overflow: hidden;
 }
 
 .gallery-thumbstrip div {
@@ -11,6 +12,8 @@
 }
 
 .gallery-thumbstrip table {
+	position: relative;
+	padding: 0;
 	border-collapse: collapse;
 }
 
@@ -60,7 +63,7 @@
 .gallery-thumbstrip-horizontal .gallery-scroll-up div {
 	margin-bottom: 12px;
 	cursor: pointer;
-	background: url(/assets/gallery/scrollarrows.png) left center no-repeat;
+	background: url(/assets/gallery/graphics/scrollarrows.png) left center no-repeat;
 	height: 72px;
 }
 
@@ -76,7 +79,7 @@
 .gallery-thumbstrip-horizontal .gallery-scroll-down div {
 	margin-bottom: 12px;
 	cursor: pointer;
-	background: url(/assets/gallery/scrollarrows.png) center right no-repeat;
+	background: url(/assets/gallery/graphics/scrollarrows.png) center right no-repeat;
 	height: 72px;	
 }
 
@@ -94,4 +97,198 @@
 	border-left-width: 8px;
 	border-right-width: 8px;
 	border-bottom: 8px solid gray;
+}
+
+/*********************************************
+ * gallery controls default styles
+ *********************************************/
+.gallery-controls {
+	/*width: 195px;
+	height: 40px;*/
+	/*background: url(/assets/gallery/controlbar-white.gif) 0 -90px no-repeat; /* just white background */
+	/*margin: 20px 15px 10px 0;*/
+}
+
+.gallery-controls ul {
+	/*position: relative;*/
+	/*left: 15px;*/
+	height: 40px; /* set this as 40px to pretend height collapse since li inside is float */
+	/*list-style: none;*/
+	margin: 0;
+	padding: 0;
+	/*background: url(/assets/gallery/controlbar-white.gif) right -90px no-repeat; /* just white background */
+}
+
+.gallery-controls li {
+	float: left;
+	padding: 5px 0;
+	margin:0;
+	/*list-style: none;*/
+	list-style-type: none;
+}
+
+.gallery-controls a {
+	background-image: url(/assets/gallery/graphics/controlbar-white.gif);
+	/*display: block;*/
+	float: left; /* block box will be created after float even for inline elements */ 
+	height: 30px; /* then we can set dimension, otherwise it will shrink */
+	width: 30px; /* or we can just use display: block */
+	outline: none;
+}
+
+.gallery-controls a.disabled {
+	cursor: default;
+}
+
+.gallery-controls a.disabled span {
+	cursor: default;
+}
+
+.gallery-controls a span {
+	display: none; /* hide the text for these graphic buttons */
+	cursor: pointer;
+}
+
+
+/* The CSS sprites for the controlbar - see http://www.w3schools.com/css/css_image_sprites.asp */
+.gallery-controls .gallery-previous a {
+	background-position: 0 0;
+}
+
+.gallery-controls .gallery-previous a:hover {
+	background-position: 0 -30px;
+}
+
+.gallery-controls .gallery-previous a.disabled {
+	background-position: 0 -60px !important;
+}
+
+.gallery-controls .gallery-play a {
+	background-position: -30px 0;
+}
+
+.gallery-controls .gallery-play a:hover {
+	background-position: -30px -30px;
+}
+
+.gallery-controls .gallery-play a.disabled {
+	background-position: -30px -60px !important;
+}
+
+.gallery-controls .gallery-pause a {
+	background-position: -60px 0;
+}
+
+.gallery-controls .gallery-pause a:hover {
+	background-position: -60px -30px;
+}
+
+.gallery-controls .gallery-next a {
+	background-position: -90px 0;
+}
+
+.gallery-controls .gallery-next a:hover {
+	background-position: -90px -30px;
+}
+
+.gallery-controls .gallery-next a.disabled {
+	background-position: -90px -60px !important;
+}
+
+.gallery-controls .gallery-move a {
+	background-position: -120px 0;
+}
+
+.gallery-controls .gallery-move a:hover {
+	background-position: -120px -30px;
+}
+
+.gallery-controls .gallery-full-expand a {
+	background-position: -150px 0;
+}
+
+.gallery-controls .gallery-full-expand a:hover {
+	background-position: -150px -30px;
+}
+
+.gallery-controls .gallery-full-expand a.disabled {
+	background-position: -150px -60px !important;
+}
+
+.gallery-controls .gallery-close a {
+	background-position: -180px 0;
+}
+
+.gallery-controls .gallery-close a:hover {
+	background-position: -180px -30px;
+}
+
+
+/*********************************************
+ * gallery controls in page styles
+ *********************************************/
+.in-page .gallery-controls {
+}
+
+.in-page .gallery-controls:after {
+	content: '';
+	display: block;
+	clear: both;
+} /* solve height shrink after ul float */
+
+.in-page .gallery-controls ul {
+	height: 28px;
+	float: right; /* make it show on right side */
+}
+
+.in-page .gallery-controls li {
+	padding: 0;
+}
+
+.in-page .gallery-controls a {
+	height: 28px;
+	width: 28px;
+}
+
+.in-page .gallery-controls .gallery-move {
+	display: none;
+}
+
+.in-page .gallery-controls .gallery-close {
+	display: none;
+}
+
+/*********************************************
+ * gallery photo default styles
+ *********************************************/
+.gallery-image-holder {
+	border: 1px solid gray;
+}
+
+.gallery-loading {
+	display: block;
+	color: black;
+	font-size: 9px;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-decoration: none;
+	padding: 3px;
+	border: 1px solid white;
+	background-color: white;
+	padding-left: 22px;
+	padding-bottom: 17px;
+	background-image: url(/assets/gallery/graphics/loader.white.gif);
+	background-repeat: no-repeat;
+	background-position: 3px 1px;
+}
+
+/*********************************************
+ * gallery default styles
+ *********************************************/
+#gallery {
+	
+}
+
+#gallery .in-page {
+	
 }

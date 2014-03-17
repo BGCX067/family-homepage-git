@@ -15,7 +15,7 @@ Animation.prototype = {
 	// timerId: undefined,
 	
 	update: function(){
-		(step[this.prop] || step._default)(this);
+		(this.step[this.prop] || this.step._default)(this);
 		
 		if (this.options.step)
 			this.options.step.call(this.elem, this.now, this);
@@ -41,7 +41,7 @@ Animation.prototype = {
 		// But it's not 100% accurate.
 		if ( t() && this.timers.push(t) == 1 ) {
 			var timerId = setInterval(function(){
-				var timers = this.timers;
+				var timers = _this.timers;
 
 				for ( var i = 0; i < timers.length; i++ )
 					if ( !timers[i]() )
@@ -85,20 +85,17 @@ Animation.prototype = {
 
 
 _.extend(Animation.prototype.step, {
-	step: {
+	opacity: function(fx){
+		xx.setStyles(fx.elem, { opacity: fx.now });
+	},
 
-		opacity: function(fx){
-			xx.setStyles(fx.elem, { opacity: fx.now });
-		},
-
-		_default: function(fx){
-			try {
-				if ( fx.elem.style && fx.elem.style[ fx.prop ] != null )
-					fx.elem.style[ fx.prop ] = fx.now + fx.unit;
-				else
-					fx.elem[ fx.prop ] = fx.now;
-			} catch (e) {}
-		}
+	_default: function(fx){
+		try {
+			if ( fx.elem.style && fx.elem.style[ fx.prop ] != null )
+				fx.elem.style[ fx.prop ] = fx.now + fx.unit;
+			else
+				fx.elem[ fx.prop ] = fx.now;
+		} catch (e) {}
 	}
 });
 

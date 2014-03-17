@@ -16,13 +16,15 @@ var Slideshow = function(gallery, options) {
 Slideshow.prototype = {
 	
 getControls: function() {
-	this.controls = xx.createElement(
-		'div', 
-		{ 
-			id: 'slideshow',
-			innerHTML: this.gallery.replaceLang(this.gallery.skin.controls),
-		}, 
-		null, this.gallery.container);
+	// this.controls = xx.createElement(
+		// 'div', 
+		// { 
+			// id: 'slideshow',
+			// innerHTML: this.gallery.replaceLang(this.gallery.skin.controls),
+		// }, 
+		// null, this.gallery.container);
+	this.gallery.container.innerHTML += this.gallery.replaceLang(this.gallery.skin.controls);
+	this.controls = xx.getElementByClass(this.gallery.container, 'div', 'gallery-controls');
 	
 	var buttons = ['play', 'pause', 'previous', 'next', 'move', 'full-expand', 'close'];
 	this.btn = {};
@@ -32,7 +34,7 @@ getControls: function() {
 		this.enable(buttons[i]);
 	}
 	this.btn.pause.style.display = 'none';
-	//this.disable('full-expand');
+	this.disable('full-expand');
 },
 
 checkFirstAndLast: function() {
