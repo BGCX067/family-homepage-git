@@ -261,11 +261,19 @@
 /*********************************************
  * gallery photo default styles
  *********************************************/
-.gallery-image-holder {
-	border: 1px solid gray;
+.gallery-image-wrapper {
+	position: relative;
+	/*border: 1px solid gray;*/
 }
 
-.gallery-loading {
+.gallery-image-wrapper .gallery-image {
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: 50%;
+}
+
+.gallery-image-wrapper .gallery-loading {
 	display: block;
 	color: black;
 	font-size: 9px;

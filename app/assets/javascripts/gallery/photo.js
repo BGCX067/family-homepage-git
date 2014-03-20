@@ -9,11 +9,9 @@ var Photo = function(gallery, options) {
 	this.options = options || {};
 	_.extend(this, this.options);
 	
-	this.tansitions = ['crossfade', 'transition'];
-	
 	var _this = this,
 		// create image holder
-		imgHolder = xx.createElement('div', 
+		imgWrapper = xx.createElement('div', 
 			{
 				className: 'gallery-image-wrapper'
 			},
@@ -24,16 +22,16 @@ var Photo = function(gallery, options) {
 			},
 			this.gallery.container
 		),
-		imgDiv = xx.createElement('div',
-			null,
-			{
-				margin: 0,
-				padding: 0,
-				width: this.gallery.width + 'px',
-				height: this.gallery.height + 'px'
-			},
-			imgHolder
-		),
+		// imgDiv = xx.createElement('div',
+			// null,
+			// {
+				// margin: 0,
+				// padding: 0,
+				// width: this.gallery.width + 'px',
+				// height: this.gallery.height + 'px'
+			// },
+			// imgWrapper
+		// ),
 		img = xx.createElement('img',
 			{
 				className: 'gallery-image',
@@ -44,7 +42,7 @@ var Photo = function(gallery, options) {
 			{
 				display: 'block'
 			},
-			imgDiv
+			imgWrapper
 		);
 	
 	// create loading icon
@@ -62,7 +60,7 @@ var Photo = function(gallery, options) {
 			zIndex: 1,
 			display: 'block'
 		}, 
-		imgHolder
+		imgWrapper
 	);
 	
 	this.loadingPos = (function loadingPos() {
@@ -78,7 +76,7 @@ var Photo = function(gallery, options) {
 		};
 	})();
 	
-	this.imgHolder = function() {
+	this.imgWrapper = function() {
 		return xx.getElementByClass(document, 'div', 'gallery-image-wrapper');
 	};
 	
@@ -108,6 +106,19 @@ contentLoaded: function() {
 		this.isLoading = false;
 		this.loading.style.top = '-9999px';
 	}
+	
+	// make invisible
+	// xx.setStyles(content, {visibility: 'hidden'});
+	xx.setStyles(content, {display: 'none'});
+	
+	// transition here
+	this.doTransition(this.lastSrc, content.src);
+	
+	// visible now
+	// xx.setStyles(content, {visibility: 'visible'});
+	// xx.setStyles(content, {display: 'block'});
+// 	
+	// this.justify(content);
 
 	// TODO: 
 	this.onLoadStarted = false;
@@ -131,18 +142,34 @@ justify: function(el) {
 		};
 	}
 	
-	var naturalDem = natural(el);
+	var naturalDem = natural(el),
 		naturalWidth = naturalDem.width,
 		naturalHeight = naturalDem.height,
-		ratio = naturalWidth / naturalHeight;
-	// console.log('natural: ', content.naturalWidth, content.naturalHeight, 'not: ', content.width, content.height);
-	xx.setStyles(el, {
-		width: naturalWidth + 'px',
-		height: naturalHeight + 'px'
-	});
-	if (ratio > this.gallery.ratio) {
-		
+		ratio = naturalWidth / naturalHeight,
+		isOverflow = naturalWidth > this.gallery.width || naturalHeight > this.gallery.height,
+		isWider = ratio > this.gallery.ratio ? true : false,
+		styleOpt;
+	if (isOverflow) {
+		if (isWider) {
+			styleOpt = { 
+				width: this.gallery.width + 'px',
+				'margin-left': -1 * this.gallery.width / 2 + 'px',
+				'margin-top': -1 * naturalHeight / 2 + 'px'
+			};
+		} else {
+			styleOpt = {
+				height: this.gallery.height + 'px',
+				'margin-left': -1 * naturalWidth / 2 + 'px',
+				'margin-top': -1 * this.gallery.height / 2 + 'px'
+			};
+		}
+	} else {
+		styleOpt = {
+			'margin-left': -1 * naturalWidth / 2 + 'px',
+			'margin-top': -1 * naturalHeight / 2 + 'px'
+		};
 	}
+	xx.setStyles(el, styleOpt);
 },
 
 showLoading: function() {
@@ -165,8 +192,6 @@ showLoading: function() {
 			});
 		}
 	}, 100);
-	
-	// if (!tgt && this.last && this.transitions[1] == 'crossfade') 
 },
 
 cancelLoading: function() {
@@ -191,19 +216,19 @@ preloadNext: function(src) {
 },
 
 transit: function(src, nextSrc) {
-	// FIXME:
-	// var _this = this;
-	// var content = this.content();
-	// content.onload = function() {
-		// _this.contentLoaded();
-		// _this.preloadNext(nextSrc);
-	// };
-	// content.src = src;
-	this.createTranslation(src, nextSrc);
+	var _this = this;
+	var content = this.content();
+	content.onload = function() {
+		_this.contentLoaded();
+		_this.preloadNext(nextSrc);
+	};
+	this.lastSrc = content.src;
+	content.src = src;
 	this.showLoading();
 },
 
-translation: function(src, nextSrc) {
+/*
+transition: function(src, nextSrc) {
 	var _this = this,
 		div = xx.createElement('div', null, {
 			margin: 0,
@@ -236,5 +261,48 @@ replacementLoaded: function(replacement) {
 		this.loading.style.top = '-9999px';
 	}
 }
+*/
 	
 };
+
+// transitions
+_.extend(Photo.prototype, {
+
+transitions: ['crossfade'],
+
+doTransition: function(from, to) {
+	if (from == null) {
+		return;
+	}
+	var trans = this.chooseTransition();
+	trans.apply(this, [from, to]);
+},
+
+chooseTransition: function() {
+	var len = this.transitions.length,
+		i = Math.floor(Math.random() * len);
+	return this[this.transitions[i]];
+},
+
+crossfade: function() {
+	var _this = this;
+		imgWrapper = _this.imgWrapper(),
+		box = xx.createElement('div', {
+			className: 'gallery-fadebox'
+		}, {
+			position: 'absolute',
+			overflow: 'hidden',
+			width: '100%',
+			height: '100%',
+			zIndex: 100
+		}, imgWrapper, true);
+	
+	function step() {
+		
+	}
+	function complete() {
+		
+	}
+}
+
+});
