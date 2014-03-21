@@ -91,6 +91,13 @@ Photo.prototype = {
 
 onLoadStarted: false,
 
+clone: function(from) {
+	var to = from.cloneNode(true);
+	to.width = from.width;
+	to.height = from.height;
+	return to;
+},
+
 contentLoaded: function() {
 	var content = this.content();
 	if (!content) {
@@ -107,18 +114,21 @@ contentLoaded: function() {
 		this.loading.style.top = '-9999px';
 	}
 	
+	this.justify(content);
+	
+	// this.current = content.cloneNode(true);
+	this.current = this.clone(content);
+	
 	// make invisible
-	// xx.setStyles(content, {visibility: 'hidden'});
+	xx.setStyles(content, {visibility: 'hidden'});
 	xx.setStyles(content, {display: 'none'});
 	
 	// transition here
-	this.doTransition(this.lastSrc, content.src);
+	this.doTransition(this.last, this.current);
 	
 	// visible now
-	// xx.setStyles(content, {visibility: 'visible'});
-	// xx.setStyles(content, {display: 'block'});
-// 	
-	// this.justify(content);
+	xx.setStyles(content, {visibility: 'visible'});
+	xx.setStyles(content, {display: 'block'});
 
 	// TODO: 
 	this.onLoadStarted = false;
@@ -222,46 +232,11 @@ transit: function(src, nextSrc) {
 		_this.contentLoaded();
 		_this.preloadNext(nextSrc);
 	};
-	this.lastSrc = content.src;
+	// this.last = content.cloneNode(true);
+	this.last = this.clone(content);
 	content.src = src;
 	this.showLoading();
 },
-
-/*
-transition: function(src, nextSrc) {
-	var _this = this,
-		div = xx.createElement('div', null, {
-			margin: 0,
-			padding: 0,
-			width: this.gallery.width + 'px',
-			height: this.gallery.height + 'px'
-		}),
-		replacement = xx.createElement('img', {
-			className: 'gallery-image',
-			contextmenu: function() {
-				return false;
-			},
-			onload: function() {
-				_this.replacementLoaded(replacement);
-				_this.preloadNext(nextSrc);
-			},
-			src: src
-		}, null, div);
-	return replacement;
-},
-
-replacementLoaded: function(replacement) {
-	if (this.onLoadStarted) {
-		return;
-	} else {
-		this.onLoadStarted = true;
-	}
-	if (this.isLoading) {
-		this.isLoading = false;
-		this.loading.style.top = '-9999px';
-	}
-}
-*/
 	
 };
 
@@ -271,7 +246,7 @@ _.extend(Photo.prototype, {
 transitions: ['crossfade'],
 
 doTransition: function(from, to) {
-	if (from == null) {
+	if (from.src == "") {
 		return;
 	}
 	var trans = this.chooseTransition();
@@ -284,8 +259,8 @@ chooseTransition: function() {
 	return this[this.transitions[i]];
 },
 
-crossfade: function() {
-	var _this = this;
+crossfade: function(from, to) {
+	var _this = this,
 		imgWrapper = _this.imgWrapper(),
 		box = xx.createElement('div', {
 			className: 'gallery-fadebox'
@@ -296,12 +271,20 @@ crossfade: function() {
 			height: '100%',
 			zIndex: 100
 		}, imgWrapper, true);
+		
+	box.appendChild(this.last);
+	box.appendChild(this.current);
+	this.current.style.opacity = 0;
+	
+	this.justify(this.last);
+	this.justify(this.current);
 	
 	function step() {
 		
 	}
+	
 	function complete() {
-		
+		imgWrapper.removeChild(box);
 	}
 }
 
