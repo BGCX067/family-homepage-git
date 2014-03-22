@@ -87,6 +87,26 @@ css: function(el, prop) {
 				// function (a, b) { return b / 100; });
 		// return val === '' ? 1 : val;
 	} 
+},
+
+/****************
+ * Intend to wait all images are ready.
+ * This method is from: http://stackoverflow.com/questions/8682085/can-i-sync-up-multiple-image-onload-calls
+ * I haven't used this method though.
+ * 
+ * One $ solution here: http://stackoverflow.com/questions/16066897/how-do-i-find-the-number-of-complete-images
+ * I use it in thumbstrip loading, it works well.
+ * 
+ * Finally, I choose to use _.after, see example in crossfade transition in photo.js
+ * 
+ ****************/
+load: function(expectedCount, completeFn){
+  var receivedCount;
+  return function(){
+    if(++receivedCount == expectedcount){
+      completeFn();
+    }
+  };
 }
 
 };

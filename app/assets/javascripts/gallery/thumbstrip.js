@@ -164,6 +164,11 @@ function Thumbstrip(gallery, options) {
 						if (/gallery-active-anchor/.test(this.className)) {
 							return false;
 						}
+						if (_this.gallery.preventTransition) {
+							return false;
+						} else {
+							_this.gallery.preventTransition = true;
+						}
 						selectThumb(index);
 						var next = (index + 1) == images.length ? null : images[index + 1].src;
 						thumbstrip.gallery.transit(image.src, next);

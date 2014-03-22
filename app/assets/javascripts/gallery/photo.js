@@ -10,7 +10,7 @@ var Photo = function(gallery, options) {
 	_.extend(this, this.options);
 	
 	var _this = this,
-		// create image holder
+		// create image wrapper
 		imgWrapper = xx.createElement('div', 
 			{
 				className: 'gallery-image-wrapper'
@@ -22,16 +22,6 @@ var Photo = function(gallery, options) {
 			},
 			this.gallery.container
 		),
-		// imgDiv = xx.createElement('div',
-			// null,
-			// {
-				// margin: 0,
-				// padding: 0,
-				// width: this.gallery.width + 'px',
-				// height: this.gallery.height + 'px'
-			// },
-			// imgWrapper
-		// ),
 		img = xx.createElement('img',
 			{
 				className: 'gallery-image',
@@ -91,19 +81,11 @@ Photo.prototype = {
 
 onLoadStarted: false,
 
-clone: function(from) {
-	var to = from.cloneNode(true);
-	to.width = from.width;
-	to.height = from.height;
-	return to;
-},
-
 contentLoaded: function() {
-	var content = this.content();
-	if (!content) {
+	if (!this.current) {
 		return;
 	}
-	content.onload = null;
+	this.current.onload = null;
 	if (this.onLoadStarted) {
 		return;
 	} else {
@@ -114,24 +96,24 @@ contentLoaded: function() {
 		this.loading.style.top = '-9999px';
 	}
 	
-	this.justify(content);
-	
-	// this.current = content.cloneNode(true);
-	this.current = this.clone(content);
-	
-	// make invisible
-	xx.setStyles(content, {visibility: 'hidden'});
-	xx.setStyles(content, {display: 'none'});
-	
-	// transition here
-	this.doTransition(this.last, this.current);
-	
-	// visible now
-	xx.setStyles(content, {visibility: 'visible'});
-	xx.setStyles(content, {display: 'block'});
+	var _this = this;
+	this.current.style.opacity = 0;
 
-	// TODO: 
+	this.doTransition(this.last, this.current);
+},
+
+afterContentLoaded: function() {
+	var content = this.content();
+	var parent = content.parentNode;
+	parent.removeChild(content);
+	parent.appendChild(this.current);
+	
+	this.current.style.opacity = 1;
+	this.justify(this.current);
+	
 	this.onLoadStarted = false;
+	
+	this.gallery.preventTransition = false;
 },
 
 justify: function(el) {
@@ -226,15 +208,26 @@ preloadNext: function(src) {
 },
 
 transit: function(src, nextSrc) {
-	var _this = this;
-	var content = this.content();
-	content.onload = function() {
-		_this.contentLoaded();
-		_this.preloadNext(nextSrc);
-	};
-	// this.last = content.cloneNode(true);
-	this.last = this.clone(content);
-	content.src = src;
+	var _this = this,
+		content = this.content();
+	this.last = content.cloneNode(true);
+	// create a new img element instead of changing it directly
+	this.current = content.cloneNode(true);
+	this.current.src = src;
+	
+	// make sure all images are ready
+	var imgs = [this.last, this.current];
+		count = _.filter(imgs, function(img) {
+			return !img.complete;
+		}).length,
+		ready = _.after(count, function() {
+			_this.contentLoaded();
+			_this.preloadNext(nextSrc);
+		});
+	_.each(imgs, function(img) {
+		img.onload = ready;
+	});
+	
 	this.showLoading();
 },
 	
@@ -247,6 +240,7 @@ transitions: ['crossfade'],
 
 doTransition: function(from, to) {
 	if (from.src == "") {
+		this.afterContentLoaded();
 		return;
 	}
 	var trans = this.chooseTransition();
@@ -262,29 +256,74 @@ chooseTransition: function() {
 crossfade: function(from, to) {
 	var _this = this,
 		imgWrapper = _this.imgWrapper(),
+		w = styleValue(imgWrapper, 'width', true),
+		h = styleValue(imgWrapper, 'height', true),
 		box = xx.createElement('div', {
 			className: 'gallery-fadebox'
 		}, {
 			position: 'absolute',
 			overflow: 'hidden',
-			width: '100%',
-			height: '100%',
+			left: 0,
+			top: 0,
+			width: w,
+			height: h,
 			zIndex: 100
-		}, imgWrapper, true);
+		}, imgWrapper, true),
+		content = this.content(),
+		lastValue;
+	
+	function styleValue(el, prop, inPx) {
+		if (el.style && el.style[prop] != null && el.style[prop] != '') {
+			var rtn = el.style[prop];
+			return inPx ? (/px$/.test(rtn) ? rtn : rtn + 'px') : (/px$/.test(rtn) ? rtn.substr(0, rtn.length - 2) : rtn);
+		} else {
+			return inPx ? el[prop] + 'px' : el[prop];
+		}
+	}
 		
 	box.appendChild(this.last);
 	box.appendChild(this.current);
-	this.current.style.opacity = 0;
 	
 	this.justify(this.last);
 	this.justify(this.current);
 	
-	function step() {
-		
+	// make invisible
+	xx.setStyles(content, {visibility: 'hidden'});
+	xx.setStyles(content, {display: 'none'});
+	
+	var hDelta = (styleValue(this.last, 'height') - styleValue(this.current, 'height')) / 2,
+		wDelta = (styleValue(this.last, 'width') - styleValue(this.current, 'width')) / 2,
+		orgTop = this.last.offsetTop,
+		orgRight = this.last.offsetLeft + this.last.offsetWidth, // offsetWidth == styleValue()
+		orgBottom = this.last.offsetTop + this.last.offsetHeight,
+		orgLeft = this.last.offsetLeft;
+	
+	// animate on a dummy div with our customized step and complete function
+	var dummy = document.createElement('div');
+	dummy.style.width = 0;
+	xx.animate(dummy, {width: 100}, {
+		duration: 250,
+		step: step,
+		complete: complete
+	});
+	
+	function step(val, opt) {
+		var pos = opt.pos,
+			inversePos = 1 - pos,
+			top = Math.round(orgTop + hDelta * pos),
+			right = Math.round(orgRight - wDelta * pos),
+			bottom = Math.round(orgBottom - hDelta * pos),
+			left = Math.round(orgLeft + wDelta * pos);
+			
+		// no need for `,' on IE8 or earlier. I think so, but maybe not.
+		box.style.clip = 'rect(' + top + 'px,' + right + 'px,' + bottom + 'px,' + left + 'px)';
+		_this.last.style.opacity = inversePos;
+		_this.current.style.opacity = pos;
 	}
 	
 	function complete() {
 		imgWrapper.removeChild(box);
+		_this.afterContentLoaded();
 	}
 }
 

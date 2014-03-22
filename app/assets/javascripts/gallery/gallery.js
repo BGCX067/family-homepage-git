@@ -82,6 +82,8 @@ initComponents: function() {
 		position: 'bottom right',
 		offsetY: 20
 	});
+	
+	this.preventTransition = false;
 },
 
 replaceLang: function(s) {
