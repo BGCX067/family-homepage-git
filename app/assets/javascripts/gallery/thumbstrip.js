@@ -119,8 +119,10 @@ function Thumbstrip(gallery, options) {
 			else if (activeLeft < -curTblPos) tblPos = -activeLeft;
 			
 			// when select thumb directly, we need to perform photo transition
-			var next = (i + 1) == _this.gallery.images.length ? null : _this.gallery.images[i + 1].src;
-			_this.gallery.transit(_this.gallery.images[i].src, next);
+			// var next = (i + 1) == _this.gallery.images.length ? null : _this.gallery.images[i + 1].src;
+			var len = _this.gallery.images.length,
+				next = _this.gallery.images[(i + 1) % len];
+			_this.gallery.transit(_this.gallery.images[i], next);
 			
 			_this.gallery.checkFirstAndLast();
 		}

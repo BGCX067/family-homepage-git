@@ -70,15 +70,13 @@ initialize: function(options) {
 },
 
 initComponents: function() {
-	// add photo TODO:
+	// add photo
 	this.photo = new Photo(this, {transitionDuration: 250});
 	
-	// add caption
+	// add slideshow
+	this.slideshow = new Slideshow(this, {useControls: true, repeat: true});
 	
-	// add slideshow TODO:
-	this.slideshow = new Slideshow(this, {useControls: true, repeat: false});
-	
-	// add thumbstrip TODO:
+	// add thumbstrip
 	this.thumbstrip = Thumbstrip(this, {
 		width: this.width,
 		// position: 'bottom right', // TODO: I'm about to support thumbstrip position in next version
@@ -130,8 +128,8 @@ _.extend(gallery, {
 
 /* delegate photo */
 _.extend(gallery, {	
-	transit: function(src, nextSrc) {
-		this.photo.transit(src, nextSrc);
+	transit: function(cur, next) {
+		this.photo.transit(cur, next);
 	}
 });
 

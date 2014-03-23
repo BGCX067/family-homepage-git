@@ -131,7 +131,7 @@ afterContentLoaded: function() {
 	this.current.onclick = function() {
 		window.location = this.src;
 	};
-	caption.innerHTML = this.getCaption();
+	caption.innerHTML = this.getCaption(this.curImg);
 	
 	this.onLoadStarted = false;
 	
@@ -229,27 +229,29 @@ preloadNext: function(src) {
 	}
 },
 
-getCaption: function() {
-	var size = this.gallery.images.length,
-		sel = this.gallery.anchorIndex(),
-		title = '',
-		cpation = '';
-	if (sel >= 0) {
-		title = this.gallery.images[sel].title || '';
-		caption = "<p class='gallery-caption-title'><span class='gallery-caption-index'>"
-			 + (sel + 1) + " / " + size + "</span>" + title + "</p>";
-	}
+getCaption: function(image) {
+	if (image == null) return '<p/>';
+	var images = this.gallery.images,
+		len = images.length,
+		index = _.indexOf(images, image),
+		indexStr = (index + 1) + ' / ' + len,
+		caption = "<p class='gallery-caption-title'><span class='gallery-caption-index'>" + 
+			indexStr + "</span>" + image.title + "</p>";
 	return caption;
 },
 
 /* this happens after thumbstrip selection */
-transit: function(src, nextSrc) {
+transit: function(cur, next) {
 	var _this = this,
 		content = this.content();
+		
 	this.last = content.cloneNode(true);
 	// create a new img element instead of changing it directly
 	this.current = content.cloneNode(true);
-	this.current.src = src;
+	this.current.src = cur.src;
+		
+	// this.preImg = this.curImg;
+	this.curImg = cur;
 	
 	// make sure all images are ready
 	var imgs = [this.last, this.current];
@@ -258,7 +260,7 @@ transit: function(src, nextSrc) {
 		}).length,
 		ready = _.after(count, function() {
 			_this.contentLoaded();
-			_this.preloadNext(nextSrc);
+			if (next && next.src) _this.preloadNext(next.src);
 		});
 	_.each(imgs, function(img) {
 		img.onload = ready;
@@ -281,6 +283,40 @@ doTransition: function(from, to) {
 	}
 	var trans = this.chooseTransition();
 	trans.apply(this, [from, to]);
+},
+
+scrollBoxTransition: function() {
+	// caption transition, downward replace
+	var _this = this;
+		caption = this.caption(),
+		scrollBox = xx.createElement('div', {
+			className: 'gallery-scrollbox'
+		}, {
+			position: 'absolute',
+			'padding-left': caption.style['padding-left'],
+			left: 0,
+			bottom: 0
+		}, caption),
+		orgCap = xx.getElementByClass(caption, 'p', 'gallery-caption-title'),
+		lastCap = orgCap.cloneNode(true),
+		curCapHTML = this.getCaption(this.curImg);
+	scrollBox.innerHTML = this.getCaption(this.curImg);
+	scrollBox.appendChild(lastCap);
+	var sbHeight = scrollBox.offsetHeight,
+		capHeight = caption.offsetHeight,
+		delta = capHeight - sbHeight;
+	return {
+		step: function(val, opt) {
+			var pos = opt.pos,
+				unit = opt.unit,
+				bottom = delta * pos;
+			scrollBox.style.bottom = bottom + unit;
+			orgCap.style.visibility = 'hidden';
+		},
+		complete: function() {
+			orgCap.innerHTML = curCapHTML;
+		}
+	};
 },
 
 chooseTransition: function() {
@@ -306,6 +342,7 @@ crossfade: function(from, to) {
 			zIndex: 100
 		}, imgWrapper, true),
 		content = this.content(),
+		scrollBoxTrans = this.scrollBoxTransition(),
 		lastValue;
 	
 	function styleValue(el, prop, inPx) {
@@ -347,6 +384,7 @@ crossfade: function(from, to) {
 	
 	function step(val, opt) {
 		var pos = opt.pos,
+			unit = opt.unit,
 			inversePos = 1 - pos,
 			top = Math.round(orgTop + hDelta * pos),
 			right = Math.round(orgRight - wDelta * pos),
@@ -354,14 +392,18 @@ crossfade: function(from, to) {
 			left = Math.round(orgLeft + wDelta * pos);
 			
 		// no need for `,' on IE8 or earlier. I think so, but maybe not.
-		box.style.clip = 'rect(' + top + 'px,' + right + 'px,' + bottom + 'px,' + left + 'px)';
+		box.style.clip = 'rect(' + top + unit + ',' + right + unit + ',' + bottom + unit + ',' + left + unit + ')';
 		_this.last.style.opacity = inversePos;
 		_this.current.style.opacity = pos;
+		
+		if (scrollBoxTrans.step) scrollBoxTrans.step.apply(_this, [val, opt]);
 	}
 	
 	function complete() {
 		imgWrapper.removeChild(box);
 		_this.afterContentLoaded();
+		
+		if (scrollBoxTrans.complete) scrollBoxTrans.complete.apply(_this);
 	}
 }
 
