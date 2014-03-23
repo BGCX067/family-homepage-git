@@ -2,6 +2,8 @@
  * @author gu jun
  */
 
+// TODO: add cookie to let user starts again from the last postion after viewing the original photo
+
 var gallery = {
 	
 skin: {

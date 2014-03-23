@@ -126,7 +126,9 @@ function Thumbstrip(gallery, options) {
 		}
 		var markerPos = cell[offsetLeft] + (cell[offsetWidth] - marker[offsetWidth]) / 2 + tblPos;
 		xx.animate(table, { left: tblPos }, null, 'easeOutQuad');
-		xx.animate(marker,{ left: markerPos }, null, 'easeOutQuad');
+		xx.animate(marker,{ left: markerPos }, null, 'easeOutQuad', function() {
+			if (scrollBy !== undefined) _this.gallery.preventTransition = false;
+		});
 		scrollUp.style.display = tblPos < 0 ? 'block' : 'none';
 		scrollDown.style.display = (tblPos > minTblPos)  ? 'block' : 'none';
 	};
@@ -176,9 +178,6 @@ function Thumbstrip(gallery, options) {
 					},
 					innerHTML: "<img src='" + image.thumbSrc + "'>"
 				};
-			// if (index == 0) {
-				// attrs.id = "thumb1"; // we can get reference easy with an id
-			// }
 			thumbstrip.anchors[index] = xx.createElement('a', attrs, null, cell);
 		})(this);
 	}, this);
@@ -199,16 +198,6 @@ function Thumbstrip(gallery, options) {
 		    }
 		}).filter(function() { return this.complete; }).load();
 	})();
-
-	// window.addEventListener('load', function() {
-		// _this.anchors[0].onclick();
-	// });
-	// $('#thumbstrip').on('load', function() {
-		// _this.anchors[0].onclick();
-	// });
-	// $(document).ready(function() {
-		// _this.anchors[0].onclick();
-	// });
 	
 	return {
 		selectPreOrNextThumb: selectPreOrNextThumb,

@@ -328,6 +328,7 @@
 	display: block;
 	top: 50%;
 	left: 50%;
+	cursor: pointer;
 }
 
 .gallery-image-wrapper .gallery-loading {
@@ -345,6 +346,20 @@
 	background-image: url(/assets/gallery/graphics/loader.white.gif);
 	background-repeat: no-repeat;
 	background-position: 3px 1px;
+}
+
+.gallery-image-wrapper .gallery-caption {
+	
+}
+
+.gallery-image-wrapper .gallery-caption .gallery-caption-title {
+	margin: 0;
+	padding: 0;
+}
+
+.gallery-image-wrapper .gallery-caption .gallery-caption-index {
+	font-weight: bold;
+	padding-right: 20px;
 }
 
 /*********************************************

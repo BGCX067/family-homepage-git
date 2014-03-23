@@ -33,6 +33,20 @@ var Photo = function(gallery, options) {
 				display: 'block'
 			},
 			imgWrapper
+		),
+		caption = xx.createElement('div', 
+			{
+				className: 'gallery-caption'
+			},
+			{
+				position: 'absolute',
+				top: '100%',
+				left: 0,
+				'padding-left': '10px',
+				height: '20px',
+				overflow: 'hidden'
+			},
+			imgWrapper
 		);
 	
 	// create loading icon
@@ -75,6 +89,10 @@ var Photo = function(gallery, options) {
 			img = xx.getElementByClass(holder, 'img', 'gallery-image');
 		return img;
 	};
+	
+	this.caption = function() {
+		return xx.getElementByClass(document, 'div', 'gallery-caption');
+	};
 };
 
 Photo.prototype = {
@@ -100,13 +118,20 @@ contentLoaded: function() {
 },
 
 afterContentLoaded: function() {
-	var content = this.content();
-	var parent = content.parentNode;
+	var content = this.content(),
+		parent = content.parentNode,
+		caption = this.caption();
+		
 	parent.removeChild(content);
 	parent.appendChild(this.current);
 	
 	this.current.style.opacity = 1;
 	this.justify(this.current);
+	
+	this.current.onclick = function() {
+		window.location = this.src;
+	};
+	caption.innerHTML = this.getCaption();
 	
 	this.onLoadStarted = false;
 	
@@ -204,6 +229,20 @@ preloadNext: function(src) {
 	}
 },
 
+getCaption: function() {
+	var size = this.gallery.images.length,
+		sel = this.gallery.anchorIndex(),
+		title = '',
+		cpation = '';
+	if (sel >= 0) {
+		title = this.gallery.images[sel].title || '';
+		caption = "<p class='gallery-caption-title'><span class='gallery-caption-index'>"
+			 + (sel + 1) + " / " + size + "</span>" + title + "</p>";
+	}
+	return caption;
+},
+
+/* this happens after thumbstrip selection */
 transit: function(src, nextSrc) {
 	var _this = this,
 		content = this.content();
