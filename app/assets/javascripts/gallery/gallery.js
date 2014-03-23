@@ -69,17 +69,17 @@ initialize: function(options) {
 
 initComponents: function() {
 	// add photo TODO:
-	this.photo = new Photo(this, {});
+	this.photo = new Photo(this, {transitionDuration: 250});
 	
 	// add caption
 	
 	// add slideshow TODO:
-	this.slideshow = new Slideshow(this, {useControls: true});
+	this.slideshow = new Slideshow(this, {useControls: true, repeat: false});
 	
 	// add thumbstrip TODO:
 	this.thumbstrip = Thumbstrip(this, {
-		width: 700,
-		position: 'bottom right',
+		width: this.width,
+		// position: 'bottom right', // TODO: I'm about to support thumbstrip position in next version
 		offsetY: 20
 	});
 	
@@ -140,6 +140,19 @@ _.extend(gallery, {
 	},
 	selectThumb: function(i) {
 		this.thumbstrip.selectThumb(i);
+	},
+	anchorIndex: function() {
+		return this.thumbstrip.anchorIndex();
+	}
+});
+
+/* delegate slideshow */
+_.extend(gallery, {
+	pause: function() {
+		this.slideshow.pause();
+	},
+	checkFirstAndLast: function() {
+		this.slideshow.checkFirstAndLast();
 	}
 });
 
@@ -176,5 +189,4 @@ _.extend(gallery, {
 		// TODO: fill in
 	}
 });
-
 

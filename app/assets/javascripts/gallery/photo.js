@@ -95,9 +95,6 @@ contentLoaded: function() {
 		this.isLoading = false;
 		this.loading.style.top = '-9999px';
 	}
-	
-	var _this = this;
-	this.current.style.opacity = 0;
 
 	this.doTransition(this.last, this.current);
 },
@@ -291,6 +288,8 @@ crossfade: function(from, to) {
 	xx.setStyles(content, {visibility: 'hidden'});
 	xx.setStyles(content, {display: 'none'});
 	
+	this.current.style.opacity = 0;
+	
 	var hDelta = (styleValue(this.last, 'height') - styleValue(this.current, 'height')) / 2,
 		wDelta = (styleValue(this.last, 'width') - styleValue(this.current, 'width')) / 2,
 		orgTop = this.last.offsetTop,
@@ -302,7 +301,7 @@ crossfade: function(from, to) {
 	var dummy = document.createElement('div');
 	dummy.style.width = 0;
 	xx.animate(dummy, {width: 100}, {
-		duration: 250,
+		duration: this.transitionDuration || 250,
 		step: step,
 		complete: complete
 	});

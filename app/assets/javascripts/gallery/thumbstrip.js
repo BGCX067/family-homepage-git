@@ -25,15 +25,13 @@
 // }
 
 function Thumbstrip(gallery, options) {
-			
-	// ThumbstripBase.call(this);
 	
 	this.options = options;
 	// this.gallery = options.gallery;
 	// this.images = this.gallery.images;
-	this.mode = options.mode || "horizontal"; // do not support other mode :D
+	this.mode = options.mode || 'horizontal'; // do not support other mode :D
 	this.width = options.width;
-	this.position = options.position;
+	this.position = options.position || '';
 	this.offsetY = options.offsetY;
 	
 	this.gallery = gallery;
@@ -47,7 +45,7 @@ function Thumbstrip(gallery, options) {
 		if (_this.curAnchor == null) {
 			return -1;
 		}
-		return _.indexOf(_this.anchors, this.curAnchor);
+		return _.indexOf(_this.anchors, _this.curAnchor);
 	}
 	
 	function scroll(delta) {
@@ -64,28 +62,27 @@ function Thumbstrip(gallery, options) {
 		selectThumb(i);
 	};
 	
-	function select(i, scrollby, dir) {
-		var i = getIndex();
-		if (i == -1) return;
-		var len = _this.anchors.length,
-			sign;
-		if (dir == 0) {
-			sign = 0;
-		} else {
-			sign = dir / Math.abs(dir);
-		}
-		i = (i + sign + len) % len;
-		selectThumb(i, scrollby);
-	};
+	// function select(i, scrollby, dir) {
+		// var i = getIndex();
+		// if (i == -1) return;
+		// var len = _this.anchors.length,
+			// sign;
+		// if (dir == 0) {
+			// sign = 0;
+		// } else {
+			// sign = dir / Math.abs(dir);
+		// }
+		// i = (i + sign + len) % len;
+		// selectThumb(i, scrollby);
+	// };
 	
 	function selectThumb(i, scrollBy) {
-		// if (i === undefined) {
-			// if (_this.curAnchor == null) {
-				// return;
-			// }
-			// i = _.indexOf(_this.anchors, this.curAnchor);
-		// }
-		// if (i == -1) return;
+		if (_this.gallery.preventTransition) {
+			return false;
+		} else {
+			_this.gallery.preventTransition = true;
+		}
+		
 		if (i === undefined && (i = getIndex()) == -1) return;
 
 		var as = dom.getElementsByTagName('a'),
@@ -120,6 +117,12 @@ function Thumbstrip(gallery, options) {
 					(as[i + 1] ? as[i + 1].parentNode[offsetWidth] : 0);
 			if (activeRight > overlayWidth - curTblPos) tblPos = overlayWidth - activeRight;
 			else if (activeLeft < -curTblPos) tblPos = -activeLeft;
+			
+			// when select thumb directly, we need to perform photo transition
+			var next = (i + 1) == _this.gallery.images.length ? null : _this.gallery.images[i + 1].src;
+			_this.gallery.transit(_this.gallery.images[i].src, next);
+			
+			_this.gallery.checkFirstAndLast();
 		}
 		var markerPos = cell[offsetLeft] + (cell[offsetWidth] - marker[offsetWidth]) / 2 + tblPos;
 		xx.animate(table, { left: tblPos }, null, 'easeOutQuad');
@@ -164,14 +167,11 @@ function Thumbstrip(gallery, options) {
 						if (/gallery-active-anchor/.test(this.className)) {
 							return false;
 						}
-						if (_this.gallery.preventTransition) {
+						if (selectThumb(index) == false) {
 							return false;
-						} else {
-							_this.gallery.preventTransition = true;
 						}
-						selectThumb(index);
-						var next = (index + 1) == images.length ? null : images[index + 1].src;
-						thumbstrip.gallery.transit(image.src, next);
+						// call delegate methods
+						thumbstrip.gallery.pause();
 						return false;
 					},
 					innerHTML: "<img src='" + image.thumbSrc + "'>"
@@ -212,13 +212,7 @@ function Thumbstrip(gallery, options) {
 	
 	return {
 		selectPreOrNextThumb: selectPreOrNextThumb,
-		selectThumb: selectThumb
+		selectThumb: selectThumb,
+		anchorIndex: getIndex
 	};
 }
-
-// function extendBase(ctor, base) {
-	// ctor.prototype = new base();
-	// ctor.prototype.constructor = ctor;
-// }
-// 
-// extendBase(Thumbstrip, ThumbstripBase);
