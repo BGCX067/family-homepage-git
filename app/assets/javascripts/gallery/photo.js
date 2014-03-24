@@ -254,11 +254,14 @@ transit: function(cur, next) {
 	this.curImg = cur;
 	
 	// make sure all images are ready
-	var imgs = [this.last, this.current];
+	var imgs = [this.last, this.current],
 		count = _.filter(imgs, function(img) {
 			return !img.complete;
 		}).length,
 		ready = _.after(count, function() {
+			if (!(_this.last.complete && _this.current.complete)) {
+				console.log('have not finished loading');
+			}
 			_this.contentLoaded();
 			if (next && next.src) _this.preloadNext(next.src);
 		});
@@ -287,7 +290,7 @@ doTransition: function(from, to) {
 
 scrollBoxTransition: function() {
 	// caption transition, downward replace
-	var _this = this;
+	var _this = this,
 		caption = this.caption(),
 		scrollBox = xx.createElement('div', {
 			className: 'gallery-scrollbox'
