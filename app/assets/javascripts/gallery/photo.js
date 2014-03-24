@@ -42,7 +42,7 @@ var Photo = function(gallery, options) {
 				position: 'absolute',
 				top: '100%',
 				left: 0,
-				'padding-left': '10px',
+				paddingLeft: '10px',
 				height: '20px',
 				overflow: 'hidden'
 			},
@@ -167,20 +167,20 @@ justify: function(el) {
 		if (isWider) {
 			styleOpt = { 
 				width: this.gallery.width + 'px',
-				'margin-left': -1 * this.gallery.width / 2 + 'px',
-				'margin-top': -1 * naturalHeight / 2 + 'px'
+				marginLeft: -1 * this.gallery.width / 2 + 'px',
+				marginTop: -1 * naturalHeight / 2 + 'px'
 			};
 		} else {
 			styleOpt = {
 				height: this.gallery.height + 'px',
-				'margin-left': -1 * naturalWidth / 2 + 'px',
-				'margin-top': -1 * this.gallery.height / 2 + 'px'
+				marginLeft: -1 * naturalWidth / 2 + 'px',
+				marginTop: -1 * this.gallery.height / 2 + 'px'
 			};
 		}
 	} else {
 		styleOpt = {
-			'margin-left': -1 * naturalWidth / 2 + 'px',
-			'margin-top': -1 * naturalHeight / 2 + 'px'
+			marginLeft: -1 * naturalWidth / 2 + 'px',
+			marginTop: -1 * naturalHeight / 2 + 'px'
 		};
 	}
 	xx.setStyles(el, styleOpt);
@@ -296,7 +296,7 @@ scrollBoxTransition: function() {
 			className: 'gallery-scrollbox'
 		}, {
 			position: 'absolute',
-			'padding-left': caption.style['padding-left'],
+			paddingLeft: caption.style.paddingLeft,
 			left: 0,
 			bottom: 0
 		}, caption),
