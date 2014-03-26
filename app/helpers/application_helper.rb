@@ -4,13 +4,8 @@ module ApplicationHelper
   def nav_tabs(tabs=[])
     html = []
     tabs.each do |tab|
-      html << (content_tag :li, :class => ("active" if request.fullpath.split(/[\??]/)[0] == tab[:path]) do
-        link_to tab[:path] do
-          content_tag(:i, '', :class => tab[:icon]) +
-          tag(:br) +
-          "#{tab[:name]}"
-        end
-      end)
+      #params[:controller]
+      html << (content_tag :li, link_to(tab[:name], tab[:path]), :class => ("active" if request.fullpath.split(/[\??]/)[0] == tab[:path]))
     end
 
     html.join.html_safe

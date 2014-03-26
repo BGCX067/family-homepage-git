@@ -2,6 +2,8 @@ html {
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	font-size: 85%;
+	font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", sans-serif;
 }
 
 body {

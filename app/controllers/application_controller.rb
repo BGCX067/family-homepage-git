@@ -14,14 +14,15 @@ class ApplicationController < ActionController::Base
   end
 
   def set_navigation_tabs
-    @tabs =
-    if current_user && manager?
-      [
-        { :name => "Home", :icon => "icon-home", :path => home_index_path },
-        { :name => "Portfolio", :icon => "icon-camera", :path => portfolio_home_index_path },
-        { :name => "Contact", :icon => "icon-envelope-alt", :path => contact_home_index_path }
+    @tabs = [
+        { :name => t('menu_home'), :path => welcome_path },
+        { :name => t('menu_family_tree'), :path => family_tree_path },
+        { :name => t('menu_timeline'), :path => '#'},
+        { :name => t('menu_blog'), :path => '#'},
+        { :name => t('menu_about'), :path => '#'}
       ]
-    elsif current_user && client?
-    end
+    #if current_user && manager?
+    #elsif current_user && client?
+    #end
   end
 end
