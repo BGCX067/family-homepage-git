@@ -1,5 +1,10 @@
 FamilyHomepage::Application.routes.draw do
   
+  #get "sign_up" => "users#new", :as => "sign_up"
+  #resources :users
+  get "sign_up", to: "users#new"
+  resources :users
+  
   get "family_tree", to: "family_tree#index"
   get "family_tree/members", to: "family_tree#members"
   
