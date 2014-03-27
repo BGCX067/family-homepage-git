@@ -1,5 +1,5 @@
 #menu {
-	margin-bottom: 10px;
+	margin-bottom: 30px;
 }
 /*
 #menu ul {
@@ -17,7 +17,7 @@
 .invertedshiftdown {
 	padding: 0;
 	width: 100%;
-	border-top: 5px solid #D10000; /*Red color theme*/
+	border-top: 3px solid #993333; /*Red color theme*/
 	background: transparent;
 	/*voice-family: "\"}\"";
 	voice-family: inherit;*/
@@ -58,14 +58,14 @@
 }
 
 .invertedshiftdown a:hover {
-	background-color: #D10000; /*Red color theme*/
+	background-color: #993333; /*Red color theme*/
 	padding-top: 9px; /*Flip default padding-top value with padding-bottom */
 	padding-bottom: 5px; /*Flip default padding-bottom value with padding-top*/
 	color: white;
 }
 
 .invertedshiftdown .active a {/** currently selected menu item **/
-	background-color: #D10000; /*Red color theme*/
+	background-color: #993333; /*Red color theme*/
 	padding-top: 9px; /*Flip default padding-top value with padding-bottom */
 	padding-bottom: 5px; /*Flip default padding-bottom value with padding-top*/
 	color: white;
