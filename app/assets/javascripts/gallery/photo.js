@@ -357,24 +357,35 @@ crossfade: function(from, to) {
 		}
 	}
 		
-	box.appendChild(this.last);
-	box.appendChild(this.current);
+	// box.appendChild(this.last);
+	// box.appendChild(this.current);
+	box.appendChild(from);
+	box.appendChild(to);
 	
-	this.justify(this.last);
-	this.justify(this.current);
+	// this.justify(this.last);
+	// this.justify(this.current);
+	this.justify(from);
+	this.justify(to);
 	
 	// make invisible
 	xx.setStyles(content, {visibility: 'hidden'});
 	xx.setStyles(content, {display: 'none'});
 	
-	this.current.style.opacity = 0;
+	// this.current.style.opacity = 0;
+	to.style.opacity = 0;
 	
-	var hDelta = (styleValue(this.last, 'height') - styleValue(this.current, 'height')) / 2,
-		wDelta = (styleValue(this.last, 'width') - styleValue(this.current, 'width')) / 2,
-		orgTop = this.last.offsetTop,
-		orgRight = this.last.offsetLeft + this.last.offsetWidth, // offsetWidth == styleValue()
-		orgBottom = this.last.offsetTop + this.last.offsetHeight,
-		orgLeft = this.last.offsetLeft;
+	// var hDelta = (styleValue(this.last, 'height') - styleValue(this.current, 'height')) / 2,
+		// wDelta = (styleValue(this.last, 'width') - styleValue(this.current, 'width')) / 2,
+		// orgTop = this.last.offsetTop,
+		// orgRight = this.last.offsetLeft + this.last.offsetWidth, // offsetWidth == styleValue()
+		// orgBottom = this.last.offsetTop + this.last.offsetHeight,
+		// orgLeft = this.last.offsetLeft;
+	var hDelta = (styleValue(from, 'height') - styleValue(to, 'height')) / 2,
+		wDelta = (styleValue(from, 'width') - styleValue(to, 'width')) / 2,
+		orgTop = from.offsetTop,
+		orgRight = from.offsetLeft + from.offsetWidth, // offsetWidth == styleValue()
+		orgBottom = from.offsetTop + from.offsetHeight,
+		orgLeft = from.offsetLeft;
 	
 	// animate on a dummy div with our customized step and complete function
 	var dummy = document.createElement('div');
@@ -396,8 +407,10 @@ crossfade: function(from, to) {
 			
 		// no need for `,' on IE8 or earlier. I think so, but maybe not.
 		box.style.clip = 'rect(' + top + unit + ',' + right + unit + ',' + bottom + unit + ',' + left + unit + ')';
-		_this.last.style.opacity = inversePos;
-		_this.current.style.opacity = pos;
+		// _this.last.style.opacity = inversePos;
+		// _this.current.style.opacity = pos;
+		from.style.opacity = inversePos;
+		to.style.opacity = pos;
 		
 		if (scrollBoxTrans.step) scrollBoxTrans.step.apply(_this, [val, opt]);
 	}
@@ -408,6 +421,10 @@ crossfade: function(from, to) {
 		
 		if (scrollBoxTrans.complete) scrollBoxTrans.complete.apply(_this);
 	}
+},
+
+horizontalSlide: function(from, to) {
+	
 }
 
 });
