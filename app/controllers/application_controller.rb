@@ -15,14 +15,24 @@ class ApplicationController < ActionController::Base
 
   def set_navigation_tabs
     @tabs = [
-        { :name => t('menu_home'), :path => welcome_path },
-        { :name => t('menu_family_tree'), :path => family_tree_path },
-        { :name => t('menu_timeline'), :path => '#'},
-        { :name => t('menu_blog'), :path => '#'},
-        { :name => t('menu_about'), :path => '#'}
+      { :name => t('menu_home'), :path => welcome_path },
+      { :name => t('menu_family_tree'), :path => family_tree_path },
+      { :name => t('menu_life'), :path => '#'},
+      { :name => t('menu_blog'), :path => '#'},
+      { :name => t('menu_about'), :path => '#'}
+    ]
+    
+    # only have built-in admin users, others cannot sign up
+    if current_user
+      @admin_tabs = [
+        { :name => t('admin_menu_activity'), :path => '#'},
+        { :name => t('admin_menu_logout'), :path => logout_path }
       ]
-    #if current_user && manager?
-    #elsif current_user && client?
-    #end
+    end
+  end
+
+  def current_user
+    return unless session[:user_id]
+    @current_user ||= User.find(session[:user_id])
   end
 end

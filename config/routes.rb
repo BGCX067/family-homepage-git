@@ -1,5 +1,9 @@
 FamilyHomepage::Application.routes.draw do
   
+  get "login" => "sessions#new", :as => "login"
+  get "logout" => "sessions#destroy", :as => "logout"
+  resources :sessions
+  
   #get "sign_up" => "users#new", :as => "sign_up"
   #resources :users
   get "sign_up", to: "users#new", :as => "sign_up"
