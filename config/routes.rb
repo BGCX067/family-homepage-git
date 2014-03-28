@@ -1,5 +1,7 @@
 FamilyHomepage::Application.routes.draw do
   
+  resources :activities
+  
   get "login" => "sessions#new", :as => "login"
   get "logout" => "sessions#destroy", :as => "logout"
   resources :sessions

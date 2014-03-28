@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     # only have built-in admin users, others cannot sign up
     if current_user
       @admin_tabs = [
-        { :name => t('admin_menu_activity'), :path => '#'},
+        { :name => t('admin_menu_activity'), :path => new_activity_path },
         { :name => t('admin_menu_logout'), :path => logout_path }
       ]
     end
