@@ -67,7 +67,6 @@ $(function() {
 					inputs = $(".gallery-thumbstrip input[type='file']"),
 					input = inputs[index],
 					image = $(".gallery-image");
-				// input.src = url;
 				image.attr("src", url);
 				
 				console.log("upload done");
