@@ -6,6 +6,8 @@
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
   
+  <%= javascript_include_tag params[:controller] %>
+  
   <%= yield :optional_resources %>
   
   <link rel="shortcut icon" href="<%= asset_path 'favicon.ico' %>">

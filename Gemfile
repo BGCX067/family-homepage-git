@@ -46,3 +46,6 @@ end
 
 gem 'bcrypt', :require => 'bcrypt'
 
+gem "mini_magick"
+
+gem 'carrierwave'

@@ -1,0 +1,44 @@
+<%= form_for @activity do |f| %>
+	<%= f.label t 'activity.date' %>
+	<%= f.date_select :date, :start_year => 2013 %>
+	<br/>
+	
+	<%= f.label t 'activity.title' %>
+	<%= f.text_field :title %>
+	<br/>
+	
+	<%= f.label t 'activity.desc' %>
+	<%= f.text_area :desc %>
+	<br>
+	
+	<%= f.button t 'activity.submit'%>
+	<br/>
+	
+	<div class="activity gallery">
+		<div class="gallery-image-wrapper">
+			<img class="gallery-image"></img>
+		</div>
+		<div class="gallery-thumbstrip gallery-thumbstrip-horizontal">
+			<div class="gallery-thumbstrip">
+				<table>
+					<tbody>
+						<tr>
+							<td><input type="file"></td>
+							<td><input type="file"></td>
+							<td><input type="file"></td>
+							<td><input type="file"></td>
+							<td><input type="file"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	
+<% end%>
+
+<!-- <%= javascript_tag do %>
+	$(function() {
+		$(".gallery_thumbstrip input[type='file']").on('change')
+	});
+<% end %> -->

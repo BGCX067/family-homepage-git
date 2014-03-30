@@ -374,3 +374,33 @@
 #gallery .in-page {
 	
 }
+
+
+/*********************************************
+ * activity gallery default styles
+ *********************************************/
+.activity .gallery-image-wrapper {
+	width: 700px;
+	height: 400px;
+}
+
+.activity .gallery-image-wrapper .gallery-image {
+	width: 700px;
+	height: 400px;
+	margin-left: -350px;
+	margin-top: -200px;
+	border: 1px solid silver;
+}
+
+.activity .gallery-thumbstrip-horizontal td {
+	border: 1px solid red;
+	height: 70px;
+	width: 70px;
+}
+
+.activity .gallery-thumbstrip-horizontal td input {
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+}
+

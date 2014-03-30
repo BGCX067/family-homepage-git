@@ -1,0 +1,11 @@
+zh-CN:
+  menu:
+    home: "首页"
+    family_tree: "家庭成员"
+    life: "过往点滴"
+    blog: "生活随笔"
+    about: "关于"
+    
+    admin:
+      logout: "离开"
+      activity: "成长记录"

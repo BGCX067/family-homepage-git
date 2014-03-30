@@ -1,24 +1,13 @@
 #menu {
-	margin-bottom: 30px;
 }
-/*
-#menu ul {
-
-}
-
-#menu ul li {
-	display: inline;
-}
-
-#menu ul li a {
-	text-decoration: none;
-}*/
 
 .invertedshiftdown {
 	padding: 0;
 	width: 100%;
 	border-top: 3px solid #993333; /*Red color theme*/
 	background: transparent;
+	height: 40px;
+	margin-bottom: 30px;
 	/*voice-family: "\"}\"";
 	voice-family: inherit;*/
 }
@@ -26,6 +15,7 @@
 .invertedshiftdown ul {
 	margin: 0;
 	margin-left: 40px; /*margin between first menu item and left browser edge*/
+	margin-right: 40px;
 	padding: 0;
 	list-style: none;
 }
@@ -69,4 +59,8 @@
 	padding-top: 9px; /*Flip default padding-top value with padding-bottom */
 	padding-bottom: 5px; /*Flip default padding-bottom value with padding-top*/
 	color: white;
+}
+
+.invertedshiftdown .admin a {
+	float: right;
 }
