@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140329172610) do
+ActiveRecord::Schema.define(version: 20140330124515) do
 
   create_table "activities", force: true do |t|
     t.date     "date"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20140329172610) do
     t.integer  "activity_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "index"
   end
 
   create_table "tmp_photos", force: true do |t|
