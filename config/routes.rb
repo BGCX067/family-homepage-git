@@ -1,6 +1,5 @@
 FamilyHomepage::Application.routes.draw do
-
-  get "life/index"
+
   post "activities/upload", to: "activities#upload"
   resources :activities
 
