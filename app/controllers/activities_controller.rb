@@ -37,7 +37,24 @@ class ActivitiesController < ApplicationController
   end
   
   def undo_upload
-    index = params[:index].to_i
+    # TODO: fill in this method
+    #index = params[:index].to_i
+  end
+  
+  def show
+    #render 'show'
+  end
+  
+  def get_activities
+    # TODO: fill this method in
+    @from = params[:from]
+    @to = params[:to]
+    @activities = Activity.all
+    @user_id = nil
+    @user = current_user
+    @user_id = @user.id unless @user.nil?
+    json = {activities: @activities, userId: @user_id}
+    render json: json
   end
   
   private
