@@ -4,3 +4,13 @@ zh-CN:
     title: 标题
     desc: 描述
     submit: 提交
+     
+  timeline:
+    year:
+      header: '%{year}年'
+      content: '本年度一共发布%{count}条活动'
+    month:
+      header: '%{month}月'
+      content: '本月一共发布%{count}条活动'
+    publish: '由%{username}发布'
+    edit: 编辑

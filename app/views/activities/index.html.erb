@@ -1,15 +1,21 @@
 <% content_for :optional_resources do %>
-	<%= javascript_include_tag '/activity/timeline' %>
+	<%= javascript_include_tag '/assets/activity/timeline' %>
+	
+	<%= javascript_tag do %>
+$(function() {
+	timeline.initialize();
+});
+	<% end %>
 <% end %>
 
 <div id="activityTimeline" class="activity-timeline">
 	<div class="activity-header"></div>
 	<div class="activity-content">
-		<%= @year_count_map.each do |k, v| %>
+		<% @year_count_map.each do |k, v| %>
 			<div class="activity-tag activity-year">
 				<div class="activity-tag-header">
-					<h><%= t('timeline.year.header', year: k)%></h>
-					<p><%= t('timeline.yaer.content', count: v)%></p>
+					<h><%= t('timeline.year.header', year: k) %></h>
+					<p><%= t('timeline.year.content', count: v) %></p>
 				</div>
 			</div>
 		<% end %>

@@ -6,62 +6,57 @@ var timeline = {
 	
 initialize: function() {
 	
-	initOnload();
+	this.initOnload();
 },
 
 initOnload: function() {
 	// get this years data when page is ready
-	var _this = this,
-		from = firstDayOfYear(true),
-		to = firstDayOfYear(false);
-	$(function() {
-		_this.getActivities(from, to, genTimeline);
-	});
+	var from = this.firstDayOfYear(true),
+		to = this.firstDayOfYear(false);
+	this.getActivities(this.genTimeline);
 },
 
 };
 
-timeline.__proto__ = {
+_.extend(timeline, {
 	
-genTimeline: function(container) {
+genTimeline: function(data, container) {
+	// processing data
+	var year_group = _.groupBy(data.activities, 'year');
 	
 },
 	
 firstDayOfYear: function(flag) {
 	var today = new Date(),
-		year = today.getFullYear() + flag ? 0 : 1,
-		firstDay = year + '-01-01';
+		year = today.getFullYear() + (flag ? 0 : 1),
+		firstDay = year.toString() + '-01-01';
 	return firstDay;
 },
 
-getActivities: function(from, to, callback) {
+getActivities: function(callback, opt) {
 	var _this = this,
 		from,
 		to,
-		callback;
-	if (arguments.length == 1 && typeof from == 'function') {
-		callback = from;
-		from = '2013-01-01';
-		to = firstDayOfYear(false);
-	} else if (arguments.length == 2 && typeof to == 'function') {
-		from = from;
-		to = firstDayOfYear(false);
-	} else if (arugments.length == 3) {
-		// do nothing
-	} else {
-		throw new Error("arguments error");
-	}
+		defaultOpt = {
+			from: '2013-01-01',
+			to: this.firstDayOfYear(false),
+			container: $(".activity-year")[0]
+		},
+		option = opt || {};
+	if (typeof callback === 'undefined') throw new Error("Need a callback function!");
+	_.defaults(option, defaultOpt);
+	
 	$.ajax({
-		url: "/activties/get_activities",
+		url: "/get_activities",
 		type: "get",
 		data: {
-			from: from,
-			to: to
+			from: option.from,
+			to: option.to
 		}
 	}).done(function(data) {
 		// invoke callback function
 		if (callback == null) return;
-		callback.call(_this, data);
+		callback.apply(_this, [data, option.container]);
 	}).fail(function() {
 		console.log("fail to get activities");
 	});
@@ -71,4 +66,4 @@ preloadNext: function() {
 	
 }
 
-};
+});

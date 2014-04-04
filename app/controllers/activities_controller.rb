@@ -7,6 +7,13 @@ class ActivitiesController < ApplicationController
   def create
     @activity = Activity.new(activity_params)
     @activity.user_id = current_user.id
+    @date = @activity.date
+    @year = @date.year
+    @month = @date.month
+    @day = @date.day
+    @activity.year = @year
+    @activity.month = @month
+    @activity.day = @day
     tmp_photos = load_tmp_photo
     new_photos = convert_photo tmp_photos
     @activity.photos = new_photos unless new_photos.nil?
@@ -41,15 +48,16 @@ class ActivitiesController < ApplicationController
     #index = params[:index].to_i
   end
   
-  def show
-    #render 'show'
+  def index
+    @year_count_map = Activity.group(:year).count
+    @year_count_map = @year_count_map.sort_by { |k, v| v }.reverse
   end
   
   def get_activities
     # TODO: fill this method in
     @from = params[:from]
     @to = params[:to]
-    @activities = Activity.all
+    @activities = Activity.where("date >= :from and date < :to", {from: @from, to: @to})
     @user_id = nil
     @user = current_user
     @user_id = @user.id unless @user.nil?
