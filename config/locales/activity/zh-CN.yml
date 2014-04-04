@@ -14,3 +14,16 @@ zh-CN:
       content: '本月一共发布%{count}条活动'
     publish: '由%{username}发布'
     edit: 编辑
+    
+  page:
+    year:
+      header: '年'
+      content: '本年度一共发布%{count}条活动'
+    month:
+      header: '月'
+      content: '本月一共发布%{count}条活动'
+    day:
+      header: '日'
+      content:
+        publish: '由%{username}发布'
+        edit: 编辑

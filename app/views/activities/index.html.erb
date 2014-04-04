@@ -1,10 +1,21 @@
 <% content_for :optional_resources do %>
+	<%= javascript_include_tag '/assets/global/global' %>
 	<%= javascript_include_tag '/assets/activity/timeline' %>
 	
 	<%= javascript_tag do %>
-$(function() {
-	timeline.initialize();
-});
+		var lang = {
+			yearHeader: "<%= t 'page.year.header' %>",
+			yearContent: "<%= t 'page.year.content' %>",
+			monthHeader: "<%= t 'page.month.header' %>",
+			monthContent: "<%= t 'page.month.content' %>",
+			dayHeader: "<%= t 'page.day.header' %>",
+			dayContentPublish: "<%= t 'page.day.content.publish' %>",
+			dayContentEdit: "<%= t 'page.day.content.edit' %>"
+		};
+	
+		$(function() {
+			timeline.initialize();
+		});
 	<% end %>
 <% end %>
 
@@ -12,11 +23,46 @@ $(function() {
 	<div class="activity-header"></div>
 	<div class="activity-content">
 		<% @year_count_map.each do |k, v| %>
-			<div class="activity-tag activity-year">
+			<div class="activity-tag activity-year activity-tag-collapsed">
 				<div class="activity-tag-header">
 					<h><%= t('timeline.year.header', year: k) %></h>
+				</div>
+				<div class="activity-tag-content">
 					<p><%= t('timeline.year.content', count: v) %></p>
 				</div>
+				
+				<!-- <div class="activity-tag activity-month">
+					<div class="activity-tag-header">
+						<h></h>
+					</div>
+					<div class="activity-tag-content">
+						<p></p>
+					</div>
+					
+					<div class="activity-tag activity-day">
+						<div class="activity-tag-header">
+							<h></h>
+						</div>	
+						<div class="activity-tag-content">
+							<div class="activity-tag-content-title">
+								<h class="activity-title"></h>
+								<h class="activity-publisher"><span class="activity-editor"></span></h>
+							</div>
+							<div class="activity-tag-content-desc">
+								<p></p>
+							</div>
+							<div class="activity-tag-content-thumbstrip">
+								<ul>
+									<li>
+										<img></img>
+									</li>
+								</ul>
+							</div>
+						</div>			
+					</div>
+					
+				</div> -->
+				
 			</div>
 		<% end %>
 	</div>

@@ -57,10 +57,12 @@ class ActivitiesController < ApplicationController
     # TODO: fill this method in
     @from = params[:from]
     @to = params[:to]
-    @activities = Activity.where("date >= :from and date < :to", {from: @from, to: @to})
+    @activities = Activity.includes(:photos).where("date >= :from and date < :to", {from: @from, to: @to})
     @user_id = nil
     @user = current_user
     @user_id = @user.id unless @user.nil?
+    puts @activities.inspect
+    puts @activities[0].photos.inspect
     json = {activities: @activities, userId: @user_id}
     render json: json
   end
