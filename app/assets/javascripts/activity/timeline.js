@@ -28,7 +28,7 @@ genYearTimeline: function(data, container) {
 	var _this = this,
 		monthGroup = _.groupBy(data.activities, 'month'),
 		monthKeys = _.sortBy(_.keys(monthGroup), function(num) { return -num; });
-	this.userId = data.userId;
+	this.user = data.user;
 	$(container).removeClass('activity-tag-collapsed').addClass('activity-tag-expanded');
 	_.each(monthKeys, function(mkey) {
 		var dayGroup = monthGroup[mkey],
@@ -66,7 +66,8 @@ genMonthTimeline: function(data, container) {
 			dayContentTitle = xx.createElement('div', {
 				className: 'activity-tag-content-title',
 				innerHTML: '<h class="activity-title">'+day.title+'</h>' 
-					+ '<h class="activity-publisher">'+lang.dayContentPublish.replace(/%{username}/, 'haha')
+					+ '<h class="activity-publisher">'+lang.dayContentPublish.replace(/%{username}/, 
+						'<span class="activity-publisher-info">'+day.user.relationship+':'+day.user.zh_fullname+'</span>')
 					+ (userId == day.user_id ? '<span class="activity-editor">'+lang.dayContentEdit+'</span>' : '') +'</h>'
 			}, null, dayContent),
 			dayContentDesc = xx.createElement('div', {
@@ -75,15 +76,15 @@ genMonthTimeline: function(data, container) {
 			}, null, dayContent),
 			thumbstripLength = (typeof day.photos == 'undefined') ? 0 : Math.min(day.photos.length, 3),
 			thumbstripHTML = (typeof day.photos == 'undefined') ? '' : '<ul>'+_.map(day.photos.slice(0, thumbstripLength), function(ph) {
-				return '<li><img src="'+ph.thumb.url+'"></img></li>';
-			}).join()+'</ul>',
+				return '<li><img src="'+ph.photo.thumb.url+'"></img></li>';
+			}).join('')+'</ul>',
 			dayContentThumbstrip = xx.createElement('div', {
 				className: 'activity-tag-content-thumbstrip',
-				innertHTML: thumbstripHTML
+				innerHTML: thumbstripHTML
 			}, null, dayContent);
 	});
 },
-	
+
 firstDayOfYear: function(flag) {
 	var today = new Date(),
 		year = today.getFullYear() + (flag ? 0 : 1),

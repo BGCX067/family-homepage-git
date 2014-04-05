@@ -61,10 +61,17 @@ class ActivitiesController < ApplicationController
     @user_id = nil
     @user = current_user
     @user_id = @user.id unless @user.nil?
-    puts @activities.inspect
-    puts @activities[0].photos.inspect
-    json = {activities: @activities, userId: @user_id}
-    render json: json
+    @activities_json = @activities.as_json(
+      except: [:created_at, :updated_at, :id, :date],
+      include: {
+        photos: {
+          except: [:created_at, :updated_at, :id]
+        },
+        user: {
+          only: [:relationship, :zh_fullname]
+        }       
+      })
+    render json: {userId: @user_id, activities: @activities_json}
   end
   
   private
