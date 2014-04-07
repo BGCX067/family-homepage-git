@@ -62,7 +62,7 @@ class ActivitiesController < ApplicationController
     @user = current_user
     @user_id = @user.id unless @user.nil?
     @activities_json = @activities.as_json(
-      except: [:created_at, :updated_at, :id, :date],
+      except: [:created_at, :updated_at, :date],
       include: {
         photos: {
           except: [:created_at, :updated_at, :id]
@@ -72,6 +72,11 @@ class ActivitiesController < ApplicationController
         }       
       })
     render json: {userId: @user_id, activities: @activities_json}
+  end
+  
+  def edit
+    @activity_id = params[:id]
+    @activity = Activity.find(@activity_id)
   end
   
   private

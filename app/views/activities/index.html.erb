@@ -1,6 +1,7 @@
 <% content_for :optional_resources do %>
 	<%= javascript_include_tag '/assets/global/global' %>
 	<%= javascript_include_tag '/assets/activity/timeline' %>
+	<%= stylesheet_link_tag '/assets/activity/timeline'%>
 	
 	<%= javascript_tag do %>
 		var lang = {
@@ -20,49 +21,24 @@
 <% end %>
 
 <div id="activityTimeline" class="activity-timeline">
-	<div class="activity-header"></div>
+	<div class="activity-header">
+		<h2>想想的点滴生活</h2>
+		<span class="downward-arrow"></span>
+	</div>
 	<div class="activity-content">
 		<% @year_count_map.each do |k, v| %>
-			<div class="activity-tag activity-year activity-tag-collapsed">
+			<div class="activity-tag activity-year activity-tag-collapsed" data-year="<%= k %>">
 				<div class="activity-tag-header">
-					<h><%= t('timeline.year.header', year: k) %></h>
+					<h3><%= t('timeline.year.header', year: k) %></h3>
+					<span class="rightward-arrow"></span>
 				</div>
 				<div class="activity-tag-content">
 					<p><%= t('timeline.year.content', count: v) %></p>
+					<div class="activity-tag-indicator">
+						<div class="activity-tag-indicator-circle"></div>
+						<div class="activity-tag-indicator-line"></div>
+					</div>
 				</div>
-				
-				<!-- <div class="activity-tag activity-month">
-					<div class="activity-tag-header">
-						<h></h>
-					</div>
-					<div class="activity-tag-content">
-						<p></p>
-					</div>
-					
-					<div class="activity-tag activity-day">
-						<div class="activity-tag-header">
-							<h></h>
-						</div>	
-						<div class="activity-tag-content">
-							<div class="activity-tag-content-title">
-								<h class="activity-title"></h>
-								<h class="activity-publisher"><span class="activity-editor"></span></h>
-							</div>
-							<div class="activity-tag-content-desc">
-								<p></p>
-							</div>
-							<div class="activity-tag-content-thumbstrip">
-								<ul>
-									<li>
-										<img></img>
-									</li>
-								</ul>
-							</div>
-						</div>			
-					</div>
-					
-				</div> -->
-				
 			</div>
 		<% end %>
 	</div>
