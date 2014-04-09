@@ -21,6 +21,8 @@ initialize: function() {
 	    });
 	};
 	
+	this.maxThumbs = 3;
+	
 	this.registerYearClick();
 	
 	this.initOnload();
@@ -80,7 +82,8 @@ genYearTimeline: function(data, container) {
 
 // geneate html for one month
 genMonthTimeline: function(data, container) {
-	var userId = this.userId,
+	var _this = this;
+		userId = this.userId,
 		month = _.keys(data)[0],
 		dayGroup = _.sortBy(data[month], 'day').reverse();
 	_.each(dayGroup, function(day) {
@@ -111,7 +114,7 @@ genMonthTimeline: function(data, container) {
 						'<span class="activity-publisher-info">'+day.user.relationship+'('+day.user.zh_fullname+')</span>') +'</h3>'
 					+ (userId == day.user_id ? '<span class="activity-editor"><a href="/activities/'+day.id+'/edit">'+lang.dayContentEdit+'</a></span>' : '')
 			}, null, dayContentInfoWrapper),
-			thumbstripLength = (typeof day.photos == 'undefined') ? 0 : Math.min(day.photos.length, 2),
+			thumbstripLength = (typeof day.photos == 'undefined') ? 0 : Math.min(day.photos.length, _this.maxThumbs),
 			thumbstripHTML = (typeof day.photos == 'undefined') ? '' : '<ul>'+_.map(day.photos.slice(0, thumbstripLength), function(ph) {
 				return '<li><img src="'+ph.photo.thumb.url+'"></img></li>';
 			}).join('')+'</ul>',

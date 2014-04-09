@@ -52,7 +52,7 @@ initialize: function(options) {
 	
 	// default value
 	this.ratio = 3/2;
-	this.width = 700;
+	this.width = 900;
 	this.height = Math.floor(this.width / this.ratio);
 	
 	// http://www.robertpenner.com/easing/ 

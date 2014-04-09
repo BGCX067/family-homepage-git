@@ -368,7 +368,7 @@
  * gallery default styles
  *********************************************/
 #gallery {
-	
+	margin: 0 auto;
 }
 
 #gallery .in-page {
