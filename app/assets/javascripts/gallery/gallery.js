@@ -50,6 +50,8 @@ initialize: function(options) {
 	this.containerId = options.containerId || 'gallery';
 	this.container = document.getElementById(this.containerId);
 	
+	// TODO: create a viewport
+	
 	// default value
 	this.ratio = 3/2;
 	this.width = 900;
@@ -80,7 +82,7 @@ initComponents: function() {
 	this.thumbstrip = Thumbstrip(this, {
 		width: this.width,
 		// position: 'bottom right', // TODO: I'm about to support thumbstrip position in next version
-		offsetY: 20
+		// offsetY: 20
 	});
 	
 	this.preventTransition = false;
@@ -188,5 +190,39 @@ _.extend(gallery, {
 	preloadThumbImages: function() {
 		// TODO: fill in
 	}
+});
+
+/* expand gallery */
+_.extend(gallery, {
+	
+	isExpanded: false,
+	
+	expand: function() {
+		// if there is already one expanded, then return since we have to collapse it first
+		if (this.isExpanded) return;
+		this.isExpanded = true;
+		var psize = this.pageSize();
+	},
+	
+	collapse: function() {
+		
+		this.isExpanded = false;
+	},
+	
+	pageSize: function() {
+		var $win = $(window),
+			width = $win.width(),
+			height = $win.height(),
+			$doc = $(document),
+			scrollTop = $doc.scrollTop(),
+			scrollLeft = $doc.scrollLeft();
+		return {
+			width: width,
+			height: heigth,
+			scrollTop: scrollTop,
+			scrollLeft: scrollLeft
+		};
+	}
+	
 });
 

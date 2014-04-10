@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
       { :name => t('menu.family_tree'), :path => family_tree_path },
       { :name => t('menu.life'), :path => activities_path },
       { :name => t('menu.blog'), :path => '#'},
-      { :name => t('menu.about'), :path => '#'}
+      { :name => t('menu.about'), :path => about_index_path}
     ]
 
     # only have built-in admin users, others cannot sign up

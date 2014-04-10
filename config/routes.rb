@@ -1,5 +1,6 @@
 FamilyHomepage::Application.routes.draw do
 
+  get "about/index"
   post "activities/upload", to: "activities#upload"
   post "activities/undo_upload", to: "activities#undo_upload"
   get "get_activities", to: "activities#get_activities"
