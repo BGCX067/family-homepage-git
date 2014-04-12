@@ -5,8 +5,8 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
   before_action :set_navigation_tabs
-  # before_action :session_expires, :only => [:login, :logout]
-  # before_action :update_session_time, :except => [:login, :logout]
+  before_action :session_expires, :except => [:login, :logout]
+  before_action :update_session_time, :except => [:login, :logout]
 
   private
 
@@ -37,16 +37,21 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find(session[:user_id])
   end
   
-  # def session_expires
-    # @time_left = session[:expires_at].nil? ? 0 : (session[:expires_at] - Time.now).to_i
-    # unless @time_left > 0
-      # reset_session
-      # # redirect_to :controller => 'welcome', :action => 'index'
-      # redirect_to welcome_path
-    # end
-  # end
-# 
-  # def update_session_time
-    # session[:expires_at] = Time.now + 1.hour
-  # end
+  def session_expires
+    return if current_user.nil?
+    @time_left = session[:expires_at].nil? ? 0 : (session[:expires_at] - Time.now).to_i
+    if @time_left < 0
+      reset_session
+      redirect_to login_path
+    end
+  end
+
+  def update_session_time
+    return if current_user.nil?
+    tmp_session = session.dup
+    reset_session
+    session.replace(temp_session)
+    session[:user_id] = @current_user.id
+    session[:expires_at] = Time.now + 1.hour
+  end
 end
