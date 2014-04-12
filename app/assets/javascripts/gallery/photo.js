@@ -156,6 +156,8 @@ justify: function(el) {
 		};
 	}
 	
+	// FIXME: issue here, should use gallery-image-wrapper to calculate styleOpt instead of gallery itself
+	// Also, we need to take padding into account
 	var naturalDem = natural(el),
 		naturalWidth = naturalDem.width,
 		naturalHeight = naturalDem.height,
@@ -330,7 +332,7 @@ chooseTransition: function() {
 
 crossfade: function(from, to) {
 	var _this = this,
-		imgWrapper = _this.imgWrapper(),
+		imgWrapper = this.imgWrapper(),
 		w = styleValue(imgWrapper, 'width', true),
 		h = styleValue(imgWrapper, 'height', true),
 		box = xx.createElement('div', {

@@ -50,12 +50,12 @@ initialize: function(options) {
 	this.containerId = options.containerId || 'gallery';
 	this.container = document.getElementById(this.containerId);
 	
-	// TODO: create a viewport
-	
 	// default value
 	this.ratio = 3/2;
 	this.width = 900;
 	this.height = Math.floor(this.width / this.ratio);
+	
+	this.viewers = [];
 	
 	// http://www.robertpenner.com/easing/ 
 	Math.linearTween = function (t, b, c, d) {
@@ -69,6 +69,8 @@ initialize: function(options) {
 	};
 	
 	this.initComponents();
+	
+	// this.genViewport();
 },
 
 initComponents: function() {
@@ -165,13 +167,13 @@ _.extend(gallery, {
 	imagesToPreload: [],
 	
 	preloadFullImage: function(i) {
-		if (this.continuePreloading && this.imagesToPreload[i] && hs.imagesToPreload[i] != 'undefined') {
+		if (this.continuePreloading && this.imagesToPreload[i] && this.imagesToPreload[i] != 'undefined') {
 			var img = document.createElement('img');
 			img.onload = function() { 
 				img = null;
-				hs.preloadFullImage(i + 1);
+				this.preloadFullImage(i + 1);
 			};
-			img.src = hs.imagesToPreload[i];
+			img.src = this.imagesToPreload[i];
 		}
 	},
 	
@@ -195,13 +197,19 @@ _.extend(gallery, {
 /* expand gallery */
 _.extend(gallery, {
 	
+	isExpanding: false,
+	
 	isExpanded: false,
 	
 	expand: function() {
-		// if there is already one expanded, then return since we have to collapse it first
-		if (this.isExpanded) return;
-		this.isExpanded = true;
+		if (this.isExpanding || this.isExpanded) return;
+		this.isExpanding = true;
 		var psize = this.pageSize();
+		
+		
+		
+		this.isExpanding = false;
+		this.isExpanded = true;
 	},
 	
 	collapse: function() {
@@ -222,6 +230,21 @@ _.extend(gallery, {
 			scrollTop: scrollTop,
 			scrollLeft: scrollLeft
 		};
+	},
+	
+	genViewport: function() {
+		var body = document.getElementsByTagName("body")[0],
+			psize = this.pageSize();
+		xx.createElement('div', {
+			className: 'gallery-viewport'
+		}, {
+			background: black,
+			padding: 0,
+			margin: 0,
+			visibility: visible,
+			opacity: 0,
+			display: none
+		}, body);
 	}
 	
 });
